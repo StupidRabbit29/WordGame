@@ -5,18 +5,21 @@
 using namespace std;
 
 const int MAX_USER_NUMBER = 1024;
+bool DEBUG = true;
 
 /*类定义*/
 //基类：人
 class person
 {
 public:
-	person();
-	~person();
+	person();//默认构造函数
+	virtual ~person();//虚析构函数
 
 	void setbasicinfo(string, string);
-	virtual void Showinfo()=0;
 	virtual void Play()=0;
+
+protected:
+	virtual void Showinfo();
 
 private:
 
