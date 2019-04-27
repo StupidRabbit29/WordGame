@@ -112,11 +112,23 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Class_Function.cpp" />
+    <ClCompile Include="GameControl.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Play_game.cpp" />
+    <ClCompile Include="Quit_system.cpp" />
+    <ClCompile Include="Rank.cpp" />
+    <ClCompile Include="Search.cpp" />
+    <ClCompile Include="Sign_in.cpp" />
+    <ClCompile Include="Sign_out.cpp" />
+    <ClCompile Include="Sign_up.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Class.h" />
     <ClInclude Include="Function_Declaration.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Dictionary.ini" />
+    <None Include="User.ini" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
