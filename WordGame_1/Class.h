@@ -26,6 +26,7 @@ public:
 	int Getrank();
 	int GetID();
 	string Getname();
+	string Getpassword();
 protected:
 	virtual void Showinfo();
 	int ID;

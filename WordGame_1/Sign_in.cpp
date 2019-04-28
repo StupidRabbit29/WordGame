@@ -4,6 +4,8 @@
 #include<numeric>
 extern vector<player>Player;
 extern vector<questioner>Questioner;
+extern vector<player>::iterator itp;
+extern vector<questioner>::iterator itq;
 extern int PlayerID;
 extern int QuestionerID;
 
@@ -14,6 +16,8 @@ void Sign_in(playertype type)
 
 	bool rightname = false;
 	char tempname[21] = { '\0' };
+	vector<player>::iterator ptemp;
+	vector<questioner>::iterator qtemp;
 
 	while (!rightname)
 	{
@@ -28,12 +32,20 @@ void Sign_in(playertype type)
 			cin.ignore(100, '\n');
 		}
 
-		if (rightname)
+		if (rightname == true && type == PLAYER)
 		{
-			if ()
+			if (!findUser(tempname, ptemp))
 			{
 				rightname = false;
-				cout << "用户名已存在，";
+				cout << "用户不存在！" << endl;
+			}
+		}
+		else if(rightname==true && type==QUESTIONER)
+		{
+			if (!findUser(tempname, qtemp))
+			{
+				rightname = false;
+				cout << "用户不存在！" << endl;
 			}
 		}
 	}
@@ -43,7 +55,7 @@ void Sign_in(playertype type)
 
 	while (!rightpw)
 	{
-		cout << "请输入密码（多于8个字符且不超过20个字符）" << endl;
+		cout << "请输入密码（多于8个字符且不超过20个字符）：" << endl;
 		if (cin.getline(temppw, 20) && temppw[8] != '\0')
 			rightpw = true;
 		else
@@ -53,26 +65,69 @@ void Sign_in(playertype type)
 			cin.clear();
 			cin.ignore(100, '\n');
 		}
+
+		if (rightpw && type == PLAYER)
+		{
+			if (!checkpw(temppw, &(*ptemp)))
+			{
+				rightpw = false;
+				cout << "密码错误，请重新输入！" << endl;
+			}
+		}
+		else if (rightpw && type == QUESTIONER)
+		{
+			if (!checkpw(temppw, &(*qtemp)))
+			{
+				rightpw = false;
+				cout << "密码错误，请重新输入！" << endl;
+			}
+		}
 	}
 
 	if (type == PLAYER)
 	{
-		player temp(tempname, temppw);
-		Player.push_back(temp);
-		auto it = Player.end();
-		it--;
-		setpersonID(&(*it));
-		PlayerID = (*it).GetID();
+		itp = ptemp;
+		PlayerID = (*itp).GetID();
 		QuestionerID = 0;
 	}
 	else
 	{
-		questioner temp(tempname, temppw);
-		Questioner.push_back(temp);
-		auto it = Questioner.end();
-		it--;
-		setpersonID(&(*it));
-		QuestionerID = (*it).GetID();
+		itq = qtemp;
+		QuestionerID = (*itq).GetID();
 		PlayerID = 0;
 	}
+}
+
+bool findUser(string name, vector<player>::iterator& temp)
+{
+	bool find = false;
+
+	for(auto it=Player.begin();it!=Player.end();it++)
+		if ((*it).Getname == name)
+		{
+			find = true;
+			temp = it;
+			break;
+		}
+}
+
+bool findUser(string name, vector<questioner>::iterator& temp)
+{
+	bool find = false;
+
+	for (auto it = Questioner.begin(); it != Questioner.end(); it++)
+		if ((*it).Getname == name)
+		{
+			find = true;
+			temp = it;
+			break;
+		}
+}
+
+bool checkpw(string password, person* user)
+{
+	if (password == user->Getpassword())
+		return true;
+	else
+		return false;
 }

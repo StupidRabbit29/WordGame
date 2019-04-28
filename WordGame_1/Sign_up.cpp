@@ -3,6 +3,8 @@
 
 extern vector<player>Player;
 extern vector<questioner>Questioner;
+extern vector<player>::iterator itp;
+extern vector<questioner>::iterator itq;
 extern int PlayerID;
 extern int QuestionerID;
 
@@ -58,8 +60,10 @@ void Sign_up(playertype type)
 	{
 		player temp(tempname, temppw);
 		Player.push_back(temp);
+
 		auto it = Player.end();
 		it--;
+		itp = it;
 		setpersonID(&(*it));
 		PlayerID = (*it).GetID();
 		QuestionerID = 0;
@@ -68,8 +72,10 @@ void Sign_up(playertype type)
 	{
 		questioner temp(tempname, temppw);
 		Questioner.push_back(temp);
+
 		auto it = Questioner.end();
 		it--;
+		itq = it;
 		setpersonID(&(*it));
 		QuestionerID = (*it).GetID();
 		PlayerID = 0;

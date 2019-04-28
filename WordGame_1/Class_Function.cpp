@@ -146,6 +146,10 @@ string person::Getname()
 {
 	return name;
 }
+string person::Getpassword()
+{
+	return password;
+}
 int person::GetID()
 {
 	return ID;
