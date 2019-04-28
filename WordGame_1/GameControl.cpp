@@ -5,6 +5,7 @@ extern vector<player>Player;
 extern vector<questioner>Questioner;
 extern bool QuitSYSTEM;
 
+using namespace std;
 void GameControl(void)
 {
 	//读取文档，加载游戏
