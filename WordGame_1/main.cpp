@@ -6,3 +6,13 @@ vector<player>::iterator itp;
 vector<questioner>::iterator itq;
 int PlayerID;
 int QuestionerID;
+const int MAX_USER_NUMBER = 1024;
+bool DEBUG = true;
+bool QuitSYSTEM = false;
+
+int main()
+{
+	GameControl();
+
+	return 0;
+}

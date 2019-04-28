@@ -1,6 +1,6 @@
 #include"Class.h"
-#include"Function_Declaration.h"
 
+extern bool DEBUG;
 extern vector<player>Player;
 extern vector<questioner>Questioner;
 extern vector<player>::iterator itp;
@@ -25,8 +25,11 @@ void Sign_up(playertype type)
 		{
 			cout << "ÊäÈë´íÎó,";
 			memset(tempname, 0, sizeof(tempname));
-			cin.clear();
-			cin.ignore(100, '\n');
+			if (!cin.good())
+			{
+				cin.clear();
+				cin.ignore(100, '\n');
+			}			
 		}
 
 		if (rightname)
@@ -51,8 +54,11 @@ void Sign_up(playertype type)
 		{
 			cout << "ÊäÈë´íÎó,";
 			memset(temppw, 0, sizeof(temppw));
-			cin.clear();
-			cin.ignore(100, '\n');
+			if (!cin.good())
+			{
+				cin.clear();
+				cin.ignore(100, '\n');
+			}
 		}
 	}
 
@@ -89,7 +95,7 @@ bool samename(playertype type, const string& name)
 	{
 		vector<player>::iterator it;
 		for (it = Player.begin(); it != Player.end(); it++)
-			if ((*it).Getname == name)
+			if ((*it).Getname() == name)
 				same = true;
 
 		return same;
@@ -98,7 +104,7 @@ bool samename(playertype type, const string& name)
 	{
 		vector<questioner>::iterator it;
 		for (it = Questioner.begin(); it != Questioner.end(); it++)
-			if ((*it).Getname == name)
+			if ((*it).Getname() == name)
 				same = true;
 
 		return same;

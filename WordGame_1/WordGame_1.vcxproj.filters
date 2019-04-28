@@ -50,9 +50,6 @@
     <ClInclude Include="Class.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Function_Declaration.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Dictionary.ini" />

@@ -1,5 +1,6 @@
 #include"Class.h"
 
+extern bool DEBUG;
 extern vector<player>Player;
 extern vector<questioner>Questioner;
 
@@ -33,6 +34,18 @@ person::~person()
 {
 	if (DEBUG)
 		cout << "Destructor of person called" << endl;
+}
+//player
+player::~player()
+{
+	if (DEBUG)
+		cout << "Destructor of player called" << endl;
+}
+//questioner
+questioner::~questioner()
+{
+	if (DEBUG)
+		cout << "Destructor of questioner called" << endl;
 }
 
 

@@ -124,7 +124,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Class.h" />
-    <ClInclude Include="Function_Declaration.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Dictionary.ini" />

@@ -5,8 +5,6 @@
 
 using namespace std;
 
-const int MAX_USER_NUMBER = 1024;
-bool DEBUG = true;
 enum playertype{ PLAYER, QUESTIONER };
 
 /*类定义*/
@@ -14,7 +12,6 @@ enum playertype{ PLAYER, QUESTIONER };
 class person
 {
 public:
-	person();//默认构造函数
 	person(const string& name, const string& password);
 	virtual ~person();//虚析构函数
 
@@ -43,12 +40,11 @@ private:
 class player :public person
 {
 public:
-	player();
 	player(const string& name, const string& password);
-	~player();
+	virtual ~player();
 
 	virtual void Showinfo()override;
-	virtual void Play()override;
+	virtual void Play()override {};
 	virtual void setID()override;
 
 	int GetEXP();
@@ -62,15 +58,24 @@ private:
 class questioner :public person
 {
 public:
-	questioner();
 	questioner(const string& name, const string& password);
-	~questioner();
+	virtual ~questioner();
 
 	virtual void Showinfo()override;
-	virtual void Play()override;
+	virtual void Play()override {};
 	virtual void setID()override;
 
 	int GetQnum();
 private:
 	int Qnum;
 };
+
+void GameControl(void);
+void Sign_up(playertype type);
+void Sign_in(playertype type);
+bool samename(playertype type, const string& name);
+void setpersonID(person* p);
+bool findUser(string name, vector<player>::iterator& temp);
+bool findUser(string name, vector<questioner>::iterator& temp);
+bool checkpw(string password, person* user);
+

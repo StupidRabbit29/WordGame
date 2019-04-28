@@ -1,7 +1,6 @@
 #include"Class.h"
-#include"Function_Declaration.h"
-#include<algorithm>
-#include<numeric>
+
+extern bool DEBUG;
 extern vector<player>Player;
 extern vector<questioner>Questioner;
 extern vector<player>::iterator itp;
@@ -28,8 +27,11 @@ void Sign_in(playertype type)
 		{
 			cout << "ÊäÈë´íÎó,";
 			memset(tempname, 0, sizeof(tempname));
-			cin.clear();
-			cin.ignore(100, '\n');
+			if (!cin.good())
+			{
+				cin.clear();
+				cin.ignore(100, '\n');
+			}
 		}
 
 		if (rightname == true && type == PLAYER)
@@ -62,8 +64,11 @@ void Sign_in(playertype type)
 		{
 			cout << "ÊäÈë´íÎó,";
 			memset(temppw, 0, sizeof(temppw));
-			cin.clear();
-			cin.ignore(100, '\n');
+			if (!cin.good())
+			{
+				cin.clear();
+				cin.ignore(100, '\n');
+			}
 		}
 
 		if (rightpw && type == PLAYER)
@@ -103,12 +108,14 @@ bool findUser(string name, vector<player>::iterator& temp)
 	bool find = false;
 
 	for(auto it=Player.begin();it!=Player.end();it++)
-		if ((*it).Getname == name)
+		if ((*it).Getname() == name)
 		{
 			find = true;
 			temp = it;
 			break;
 		}
+
+	return find;
 }
 
 bool findUser(string name, vector<questioner>::iterator& temp)
@@ -116,12 +123,14 @@ bool findUser(string name, vector<questioner>::iterator& temp)
 	bool find = false;
 
 	for (auto it = Questioner.begin(); it != Questioner.end(); it++)
-		if ((*it).Getname == name)
+		if ((*it).Getname() == name)
 		{
 			find = true;
 			temp = it;
 			break;
 		}
+
+	return find;
 }
 
 bool checkpw(string password, person* user)
