@@ -1,7 +1,9 @@
 #pragma once
 #include<iostream>
+#include<sstream>
 #include<string>
 #include<vector>
+#include<windows.h>
 
 using namespace std;
 
@@ -78,4 +80,5 @@ void setpersonID(person* p);
 bool findUser(string name, vector<player>::iterator& temp);
 bool findUser(string name, vector<questioner>::iterator& temp);
 bool checkpw(string password, person* user);
-
+void WriteUserfile(vector<player>::iterator temp);
+void WriteUserfile(vector<questioner>::iterator temp);
