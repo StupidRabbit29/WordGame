@@ -15,6 +15,7 @@ class person
 {
 public:
 	person(const string& name, const string& password);
+	person(const string&, const string&, int, int, int);
 	virtual ~person();//ÐéÎö¹¹º¯Êý
 
 	void setbasicinfo(const string& name, const string& password);
@@ -43,6 +44,7 @@ class player :public person
 {
 public:
 	player(const string& name, const string& password);
+	player(const string&, const string&, int, int, int, int, int);
 	virtual ~player();
 
 	virtual void Showinfo()override;
@@ -61,6 +63,7 @@ class questioner :public person
 {
 public:
 	questioner(const string& name, const string& password);
+	questioner(const string&, const string&, int, int, int, int);
 	virtual ~questioner();
 
 	virtual void Showinfo()override;
@@ -75,6 +78,7 @@ private:
 void GameControl(void);
 void Sign_up(playertype type);
 void Sign_in(playertype type);
+void Sign_out(playertype type);
 bool samename(playertype type, const string& name);
 void setpersonID(person* p);
 bool findUser(string name, vector<player>::iterator& temp);
@@ -82,3 +86,7 @@ bool findUser(string name, vector<questioner>::iterator& temp);
 bool checkpw(string password, person* user);
 void WriteUserfile(vector<player>::iterator temp);
 void WriteUserfile(vector<questioner>::iterator temp);
+void ReadUserfile();
+void UserControl(person* user);
+
+

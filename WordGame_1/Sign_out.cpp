@@ -8,21 +8,26 @@ extern vector<questioner>::iterator itq;
 extern int PlayerID;
 extern int QuestionerID;
 
-void Sign_out()
+void Sign_out(playertype type)
 {
 	if (DEBUG)
 		cout << "Sign_out called" << endl;
 
-
+	if (type == PLAYER)
+		WriteUserfile(itp);
+	else
+		WriteUserfile(itq);
 }
 
 void WriteUserfile(vector<player>::iterator temp)
 {
-	string filename = "User.ini";
+	string filename = ".\\User.ini";
+	string tempstr;
 	stringstream ss;
 	
 	ss << "Player" << (*temp).GetID();
-	LPCSTR str1 = ss.str().c_str();
+	ss >> tempstr;
+	LPCSTR str1 = tempstr.c_str();
 	LPCSTR str2 = filename.c_str();
 	
 	WritePrivateProfileStringA(str1, "name", (*temp).Getname().c_str(), str2);
@@ -31,37 +36,44 @@ void WriteUserfile(vector<player>::iterator temp)
 	
 	ss.str("");
 	ss << (*temp).GetID();
-	LPCSTR str3 = ss.str().c_str();
+	ss >> tempstr;
+	LPCSTR str3 = tempstr.c_str();
 	WritePrivateProfileStringA(str1, "ID", str3, str2);
 	
 	ss.str("");
 	ss << (*temp).Getlevel();
-	LPCSTR str3 = ss.str().c_str();
+	ss >> tempstr;
+	str3 = tempstr.c_str();
 	WritePrivateProfileStringA(str1, "level", str3, str2);
 	
 	ss.str("");
 	ss << (*temp).Getrank();
-	LPCSTR str3 = ss.str().c_str();
+	ss >> tempstr;
+	str3 = tempstr.c_str();
 	WritePrivateProfileStringA(str1, "rank", str3, str2);
 	
 	ss.str("");
 	ss << (*temp).GetEXP();
-	LPCSTR str3 = ss.str().c_str();
+	ss >> tempstr;
+	str3 = tempstr.c_str();
 	WritePrivateProfileStringA(str1, "EXP", str3, str2);
 	
 	ss.str("");
 	ss << (*temp).Getround();
-	LPCSTR str3 = ss.str().c_str();
+	ss >> tempstr;
+	str3 = tempstr.c_str();
 	WritePrivateProfileStringA(str1, "round", str3, str2);
 }
 
 void WriteUserfile(vector<questioner>::iterator temp)
 {
-	string filename = "User.ini";
+	string filename = ".\\User.ini";
+	string tempstr;
 	stringstream ss;
 
 	ss << "Questioner" << (*temp).GetID();
-	LPCSTR str1 = ss.str().c_str();
+	ss >> tempstr;
+	LPCSTR str1 = tempstr.c_str();
 	LPCSTR str2 = filename.c_str();
 
 	WritePrivateProfileStringA(str1, "name", (*temp).Getname().c_str(), str2);
@@ -70,26 +82,101 @@ void WriteUserfile(vector<questioner>::iterator temp)
 
 	ss.str("");
 	ss << (*temp).GetID();
-	LPCSTR str3 = ss.str().c_str();
+	ss >> tempstr;
+	LPCSTR str3 = tempstr.c_str();
 	WritePrivateProfileStringA(str1, "ID", str3, str2);
 
 	ss.str("");
 	ss << (*temp).Getlevel();
-	LPCSTR str3 = ss.str().c_str();
+	ss >> tempstr;
+	str3 = tempstr.c_str();
 	WritePrivateProfileStringA(str1, "level", str3, str2);
 
 	ss.str("");
 	ss << (*temp).Getrank();
-	LPCSTR str3 = ss.str().c_str();
+	ss >> tempstr;
+	str3 = tempstr.c_str();
 	WritePrivateProfileStringA(str1, "rank", str3, str2);
 
 	ss.str("");
 	ss << (*temp).GetQnum();
-	LPCSTR str3 = ss.str().c_str();
+	ss >> tempstr;
+	str3 = tempstr.c_str();
 	WritePrivateProfileStringA(str1, "Qnum", str3, str2);
 }
 
 void ReadUserfile()
 {
+	int playernum = 0;
+	int questionernum = 0;
+	string filename = ".\\User.ini";
+	string tempstr;
+	stringstream ss;
+	ss << "Number";
+	ss >> tempstr;
+	LPCSTR str1 = tempstr.c_str();
+	LPCSTR str2 = filename.c_str();
 
+	playernum = GetPrivateProfileIntA(str1, "player", 0, str2);
+	questionernum = GetPrivateProfileIntA(str1, "questioner", 0, str2);
+
+	while (playernum > 0)
+	{
+		stringstream ss;
+		ss << "Player" << playernum;
+		ss >> tempstr;
+		LPCSTR pstr = tempstr.c_str();
+
+		char name[30];
+		GetPrivateProfileStringA(pstr, "name", "", name, sizeof(name), str2);
+		char password[30] = { '\0' };
+		GetPrivateProfileStringA(pstr, "password", "", password, sizeof(password), str2);
+
+		int ID = 0;
+		int level = 0;
+		int rank = 0;
+		int EXP = 0;
+		int round = 0;
+
+		ID= GetPrivateProfileIntA(pstr, "ID", 0, str2);
+		level= GetPrivateProfileIntA(pstr, "level", 0, str2);
+		rank= GetPrivateProfileIntA(pstr, "rank", 0, str2);
+		EXP= GetPrivateProfileIntA(pstr, "EXP", 0, str2);
+		round = GetPrivateProfileIntA(pstr, "round", 0, str2);
+
+		player temp(name, password, ID, level, rank, EXP, round);
+		Player.push_back(temp);
+
+		playernum--;
+	}
+
+	while (questionernum > 0)
+	{
+		stringstream ss;
+		ss << "Questioner" << questionernum;
+		ss >> tempstr;
+		LPCSTR qstr = tempstr.c_str();
+
+		char name[30] = { '\0' };
+		GetPrivateProfileStringA(qstr, "name", "", name, sizeof(name), str2);
+		char password[30] = { '\0' };
+		GetPrivateProfileStringA(qstr, "password", "", password, sizeof(password), str2);
+
+		int ID = 0;
+		int level = 0;
+		int rank = 0;
+		int Qnum = 0;
+
+		ID = GetPrivateProfileIntA(qstr, "ID", 0, str2);
+		level = GetPrivateProfileIntA(qstr, "level", 0, str2);
+		rank = GetPrivateProfileIntA(qstr, "rank", 0, str2);
+		Qnum = GetPrivateProfileIntA(qstr, "Qnum", 0, str2);
+
+		questioner temp(name, password, ID, level, rank, Qnum);
+		Questioner.push_back(temp);
+
+		questionernum--;
+	}
+
+	PlayerID = QuestionerID = 0;
 }

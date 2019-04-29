@@ -70,6 +70,7 @@ void Sign_up(playertype type)
 		auto it = Player.end();
 		it--;
 		itp = it;
+		WriteUserfile(it);
 		setpersonID(&(*it));
 		PlayerID = (*it).GetID();
 		QuestionerID = 0;
@@ -82,10 +83,18 @@ void Sign_up(playertype type)
 		auto it = Questioner.end();
 		it--;
 		itq = it;
+		WriteUserfile(it);
 		setpersonID(&(*it));
 		QuestionerID = (*it).GetID();
 		PlayerID = 0;
 	}
+
+	if (type == PLAYER)
+		UserControl(&(*itp));
+	else
+		UserControl(&(*itq));
+
+	Sign_out(type);
 }
 
 bool samename(playertype type, const string& name)

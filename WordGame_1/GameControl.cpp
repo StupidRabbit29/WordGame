@@ -9,6 +9,7 @@ using namespace std;
 void GameControl(void)
 {
 	//读取文档，加载游戏
+	ReadUserfile();
 
 	while (!QuitSYSTEM)
 	{
@@ -23,7 +24,11 @@ void GameControl(void)
 			<< "*******************************************************************" << endl;
 
 		int choice = 0;
-		cin >> choice;
+		while (!(cin >> choice))
+		{
+			cin.clear();
+			cin.ignore(1000, '\n');
+		}
 		cin.get();
 
 		switch (choice)

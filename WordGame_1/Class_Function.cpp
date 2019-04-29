@@ -9,43 +9,73 @@ extern vector<questioner>Questioner;
 person::person(const string& name, const string& password)
 {
 	if (DEBUG)
-		cout << "Two arguments constructor of person called" << endl;
+		cout << "Two arguments constructor of person" << ID << " called" << endl;
 
 	setbasicinfo(name, password);
+	ID = level = rank = 0;
+
+}
+person::person(const string& name, const string& password, int ID, int level, int rank)
+{
+	if(DEBUG)
+		cout << "Five arguments constructor of person" << ID << " called" << endl;
+
+	setbasicinfo(name, password);
+	this->ID = ID;
+	this->rank = rank;
+	this->level = level;
 }
 //player
 player::player(const string& name, const string& password)
 	:person(name, password)
 {
 	if (DEBUG)
-		cout << "Two arguments constructor of player called" << endl;
+		cout << "Two arguments constructor of player" << ID << " called" << endl;
+}
+player::player(const string& name, const string& password, int ID, int level, int rank, int EXP, int round)
+	:person(name, password, ID, level, rank)
+{
+	if (DEBUG)
+		cout << "Seven arguments constructor of player" << ID << " called" << endl;
+
+	this->EXP = EXP;
+	this->round = round;
 }
 //questioner
 questioner::questioner(const string& name, const string& password)
 	:person(name, password)
 {
 	if (DEBUG)
-		cout << "Two arguments constructor of questioner called" << endl;
+		cout << "Two arguments constructor of questioner" << ID << " called" << endl;
 }
+questioner::questioner(const string& name, const string& password, int ID, int level, int rank, int Qnum)
+	: person(name, password, ID, level, rank)
+{
+	if (DEBUG)
+		cout << "Six arguments constructor of questioner" << ID << " called" << endl;
+
+	this->Qnum = Qnum;
+}
+
 
 /*destructor*/
 //person
 person::~person()
 {
 	if (DEBUG)
-		cout << "Destructor of person called" << endl;
+		cout << "Destructor of person" << ID << " called" << endl;
 }
 //player
 player::~player()
 {
 	if (DEBUG)
-		cout << "Destructor of player called" << endl;
+		cout << "Destructor of player" << ID << " called" << endl;
 }
 //questioner
 questioner::~questioner()
 {
 	if (DEBUG)
-		cout << "Destructor of questioner called" << endl;
+		cout << "Destructor of questioner" << ID << " called" << endl;
 }
 
 

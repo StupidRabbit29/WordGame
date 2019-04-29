@@ -101,6 +101,13 @@ void Sign_in(playertype type)
 		QuestionerID = (*itq).GetID();
 		PlayerID = 0;
 	}
+
+	if (type == PLAYER)
+		UserControl(&(*itp));
+	else
+		UserControl(&(*itq));
+
+	Sign_out(type);
 }
 
 bool findUser(string name, vector<player>::iterator& temp)
