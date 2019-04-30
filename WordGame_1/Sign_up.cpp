@@ -70,10 +70,16 @@ void Sign_up(playertype type)
 		auto it = Player.end();
 		it--;
 		itp = it;
-		WriteUserfile(it);
 		setpersonID(&(*it));
+		WriteUserfile(it);
 		PlayerID = (*it).GetID();
 		QuestionerID = 0;
+
+		stringstream ss;
+		string str;
+		ss << Player.size();
+		ss >> str;
+		WritePrivateProfileStringA("Number", "player", str.c_str(), ".\\User.ini");
 	}
 	else
 	{
@@ -83,10 +89,16 @@ void Sign_up(playertype type)
 		auto it = Questioner.end();
 		it--;
 		itq = it;
-		WriteUserfile(it);
 		setpersonID(&(*it));
+		WriteUserfile(it);
 		QuestionerID = (*it).GetID();
 		PlayerID = 0;
+
+		stringstream ss;
+		string str;
+		ss << Questioner.size();
+		ss >> str;
+		WritePrivateProfileStringA("Number", "questioner", str.c_str(), ".\\User.ini");
 	}
 
 	if (type == PLAYER)

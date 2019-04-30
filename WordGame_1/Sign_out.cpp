@@ -17,17 +17,20 @@ void Sign_out(playertype type)
 		WriteUserfile(itp);
 	else
 		WriteUserfile(itq);
+
+	PlayerID = QuestionerID = 0;
 }
 
 void WriteUserfile(vector<player>::iterator temp)
 {
 	string filename = ".\\User.ini";
+	string sectionname;
 	string tempstr;
 	stringstream ss;
 	
 	ss << "Player" << (*temp).GetID();
-	ss >> tempstr;
-	LPCSTR str1 = tempstr.c_str();
+	ss >> sectionname;
+	LPCSTR str1 = sectionname.c_str();
 	LPCSTR str2 = filename.c_str();
 	
 	WritePrivateProfileStringA(str1, "name", (*temp).Getname().c_str(), str2);
@@ -35,30 +38,35 @@ void WriteUserfile(vector<player>::iterator temp)
 	WritePrivateProfileStringA(str1, "password", (*temp).Getpassword().c_str(), str2);
 	
 	ss.str("");
+	ss.clear();
 	ss << (*temp).GetID();
 	ss >> tempstr;
 	LPCSTR str3 = tempstr.c_str();
 	WritePrivateProfileStringA(str1, "ID", str3, str2);
 	
 	ss.str("");
+	ss.clear();
 	ss << (*temp).Getlevel();
 	ss >> tempstr;
 	str3 = tempstr.c_str();
 	WritePrivateProfileStringA(str1, "level", str3, str2);
 	
 	ss.str("");
+	ss.clear();
 	ss << (*temp).Getrank();
 	ss >> tempstr;
 	str3 = tempstr.c_str();
 	WritePrivateProfileStringA(str1, "rank", str3, str2);
 	
 	ss.str("");
+	ss.clear();
 	ss << (*temp).GetEXP();
 	ss >> tempstr;
 	str3 = tempstr.c_str();
 	WritePrivateProfileStringA(str1, "EXP", str3, str2);
 	
 	ss.str("");
+	ss.clear();
 	ss << (*temp).Getround();
 	ss >> tempstr;
 	str3 = tempstr.c_str();
@@ -68,12 +76,13 @@ void WriteUserfile(vector<player>::iterator temp)
 void WriteUserfile(vector<questioner>::iterator temp)
 {
 	string filename = ".\\User.ini";
+	string sectionname;
 	string tempstr;
 	stringstream ss;
 
 	ss << "Questioner" << (*temp).GetID();
-	ss >> tempstr;
-	LPCSTR str1 = tempstr.c_str();
+	ss >> sectionname;
+	LPCSTR str1 = sectionname.c_str();
 	LPCSTR str2 = filename.c_str();
 
 	WritePrivateProfileStringA(str1, "name", (*temp).Getname().c_str(), str2);
@@ -81,24 +90,28 @@ void WriteUserfile(vector<questioner>::iterator temp)
 	WritePrivateProfileStringA(str1, "password", (*temp).Getpassword().c_str(), str2);
 
 	ss.str("");
+	ss.clear();
 	ss << (*temp).GetID();
 	ss >> tempstr;
 	LPCSTR str3 = tempstr.c_str();
 	WritePrivateProfileStringA(str1, "ID", str3, str2);
 
 	ss.str("");
+	ss.clear();
 	ss << (*temp).Getlevel();
 	ss >> tempstr;
 	str3 = tempstr.c_str();
 	WritePrivateProfileStringA(str1, "level", str3, str2);
 
 	ss.str("");
+	ss.clear();
 	ss << (*temp).Getrank();
 	ss >> tempstr;
 	str3 = tempstr.c_str();
 	WritePrivateProfileStringA(str1, "rank", str3, str2);
 
 	ss.str("");
+	ss.clear();
 	ss << (*temp).GetQnum();
 	ss >> tempstr;
 	str3 = tempstr.c_str();

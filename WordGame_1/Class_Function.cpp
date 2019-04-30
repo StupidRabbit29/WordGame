@@ -31,6 +31,8 @@ player::player(const string& name, const string& password)
 {
 	if (DEBUG)
 		cout << "Two arguments constructor of player" << ID << " called" << endl;
+
+	EXP = round = 0;
 }
 player::player(const string& name, const string& password, int ID, int level, int rank, int EXP, int round)
 	:person(name, password, ID, level, rank)
@@ -47,6 +49,8 @@ questioner::questioner(const string& name, const string& password)
 {
 	if (DEBUG)
 		cout << "Two arguments constructor of questioner" << ID << " called" << endl;
+
+	Qnum = 0;
 }
 questioner::questioner(const string& name, const string& password, int ID, int level, int rank, int Qnum)
 	: person(name, password, ID, level, rank)
