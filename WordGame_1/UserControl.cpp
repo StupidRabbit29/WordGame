@@ -35,7 +35,7 @@ void UserControl(person* user)
 		{
 		case 0:
 		{
-
+			user->Play();
 			break;
 		}
 		case 1:

@@ -48,7 +48,7 @@ public:
 	virtual ~player();
 
 	virtual void Showinfo()override;
-	virtual void Play()override {};
+	virtual void Play()override;
 	virtual void setID()override;
 
 	int GetEXP();
@@ -67,7 +67,7 @@ public:
 	virtual ~questioner();
 
 	virtual void Showinfo()override;
-	virtual void Play()override {};
+	virtual void Play()override;
 	virtual void setID()override;
 
 	int GetQnum();
