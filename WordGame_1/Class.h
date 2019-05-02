@@ -4,6 +4,7 @@
 #include<string>
 #include<vector>
 #include<windows.h>
+#include<time.h>
 
 using namespace std;
 
@@ -50,7 +51,9 @@ public:
 	virtual void Showinfo()override;
 	virtual void Play()override;
 	virtual void setID()override;
-
+	
+	void SetEXP(int EXP);
+	void Setround(int round);
 	int GetEXP();
 	int Getround();
 private:
@@ -70,6 +73,7 @@ public:
 	virtual void Play()override;
 	virtual void setID()override;
 
+	void SetQnum(int Q);
 	int GetQnum();
 private:
 	int Qnum;
@@ -88,5 +92,5 @@ void WriteUserfile(vector<player>::iterator temp);
 void WriteUserfile(vector<questioner>::iterator temp);
 void ReadUserfile();
 void UserControl(person* user);
-
-
+string GetWord(int hard, int num);
+bool GoodWord(int choice, char *word);

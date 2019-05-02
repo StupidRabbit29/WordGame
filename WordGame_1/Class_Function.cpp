@@ -215,3 +215,20 @@ int questioner::GetQnum()
 {
 	return Qnum;
 }
+
+/*修改对象中的信息*/
+//基类
+//闯关者？用不用
+void player::SetEXP(int EXP)
+{
+	this->EXP = EXP;
+}
+void player::Setround(int round)
+{
+	this->round = round;
+}
+//出题者
+void questioner::SetQnum(int Q)
+{
+	this->Qnum = Q;
+}
