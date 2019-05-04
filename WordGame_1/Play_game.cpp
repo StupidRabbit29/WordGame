@@ -2,6 +2,60 @@
 
 extern bool DEBUG;
 
+int GameDifficulty[15][2] = {
+	{4, 1},
+	{4, 2},
+	{4, 3},
+	{4, 4},
+	{4, 5},
+	{6, 3},
+	{6, 4},
+	{6, 5},
+	{6, 6},
+	{6, 7},
+	{8, 5}, 
+	{8, 6}, 
+	{8, 7}, 
+	{8, 8},
+	{8, 9}
+};
+
+int PLevelUp[15] = {
+	100,
+	300,
+	600,
+	1200,
+	1800,
+	2500,
+	3400,
+	4500,
+	6000,
+	8000,
+	11000,
+	15000,
+	20000,
+	30000,
+	50000
+};
+
+int QLevelUp[15] = {
+	2,
+	3,
+	5,
+	8,
+	13,
+	21,
+	34,
+	55,
+	89,
+	100,
+	120,
+	140,
+	200,
+	300,
+	500
+};
+
 void player::Play()
 {
 	if (DEBUG)
@@ -9,49 +63,46 @@ void player::Play()
 
 	int hard;
 	int wordnum;
-	int level = Getlevel();
-	if (level < 5)
+	int userlevel = Getlevel();
+	hard = GameDifficulty[userlevel - 1][0];
+	wordnum = GameDifficulty[userlevel - 1][1];
+
+	bool KO = true;
+
+	for (int i = 0; i < wordnum && KO == true; i++)
 	{
-		hard = 4;
-		wordnum = 1 + level;
+		string word = GetWord(hard, i + 1, wordnum);
+		cout << word;
+		Sleep(2000);
+		cout << "\r" << "请输入您的答案：";
+
+		string ans;
+		cin >> ans;
+
+		if (strcmp(ans.c_str(), word.c_str()) == 0)
+		{
+			cout << "答案正确，再接再厉，加油！" << endl;
+			EXP += 100;
+		}
+		else
+		{
+			KO = false;
+			cout << "答案错误，游戏结束！" << endl;
+		}
 	}
-	else if (level < 8)
-	{
-		hard = 6;
-		wordnum = 1 + level - 5;
-	}
-	else if (level < 10)
-	{
-		hard = 6;
-		wordnum = 3 + level - 7;
-	}
-	else if (level < 15)
-	{
-		hard = 8;
-		wordnum = 3 + level - 15;
-	}
 
-
-
-
-	string word = GetWord(1,1);
-	cout << word;
-	Sleep(2000);
-	cout << "\r" << "请输入您的答案：";
-
-	string ans;
-	cin >> ans;
-
-	if (strcmp(ans.c_str(), word.c_str()) == 0)
-	{
-		cout << "答案正确，恭喜！" << endl;
-		EXP += 100;
+	if (KO == true)
 		round++;
-	}
-	else
+	
+	int i = 0;
+	for (i = 0; i < 15; i++)
 	{
-		cout << "答案错误，游戏结束！" << endl;
+		if (PLevelUp[i] > EXP)
+			break;
 	}
+	Setlevel(i);
+
+	cout << "游戏结束！" << endl;
 }
 
 void questioner::Play()
@@ -118,32 +169,41 @@ void questioner::Play()
 		}
 	}
 
+	int i = 0;
+	for (i = 0; i < 15; i++)
+	{
+		if (QLevelUp[i] > Qnum)
+			break;
+	}
+	Setlevel(i);
+
 	cout << "游戏结束！" << endl;
 }
 
-string GetWord(int hard, int num)
+string GetWord(int hard, int num, int allnum)
 {
 	if (DEBUG)
 		cout << "GetWord is called!" << endl;
 
 	srand(time(NULL));
 
-	int number = GetPrivateProfileIntA("4", "number", 0, ".\\Dictionary.ini");
 
 	stringstream ss;
-	string str;
-	ss << (rand() % number + 1);
-	ss >> str;
-
 	string shard;
-	ss.str("");
-	ss.clear();
 	ss << hard;
 	ss >> shard;
 
+	int number = GetPrivateProfileIntA(shard.c_str(), "number", 0, ".\\Dictionary.ini");
+
+	ss.str("");
+	ss.clear();
+	ss << (rand() % (number / allnum) + (num - 1)*(number / allnum) + 1);
+	string snum;
+	ss >> snum;
+
 	char word[30] = { '\0' };
 
-	GetPrivateProfileStringA(shard.c_str(), str.c_str(), "", word, sizeof(word), ".\\Dictionary.ini");
+	GetPrivateProfileStringA(shard.c_str(), snum.c_str(), "", word, sizeof(word), ".\\Dictionary.ini");
 
 	return word;
 }

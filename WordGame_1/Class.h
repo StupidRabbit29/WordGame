@@ -28,6 +28,8 @@ public:
 	int GetID();
 	string Getname();
 	string Getpassword();
+	void Setlevel(int level);
+	void Setrank(int rank);
 protected:
 	virtual void Showinfo();
 	int ID;
@@ -92,5 +94,5 @@ void WriteUserfile(vector<player>::iterator temp);
 void WriteUserfile(vector<questioner>::iterator temp);
 void ReadUserfile();
 void UserControl(person* user);
-string GetWord(int hard, int num);
+string GetWord(int hard, int num, int allnum);
 bool GoodWord(int choice, char *word);

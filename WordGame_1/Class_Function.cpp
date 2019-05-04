@@ -83,7 +83,7 @@ questioner::~questioner()
 }
 
 
-
+//person
 void person::setbasicinfo(const string& name, const string& password)
 {
 	if (DEBUG)
@@ -93,12 +93,20 @@ void person::setbasicinfo(const string& name, const string& password)
 	this->name = name;
 	this->password = password;
 }
-
+void person::Setlevel(int level)
+{
+	this->level = level;
+}
+void person::Setrank(int rank)
+{
+	this->rank = rank;
+}
+//player
 void player::setID()
 {
 	ID = Player.size();
 }
-
+//questioner
 void questioner::setID()
 {
 	ID = Questioner.size();
