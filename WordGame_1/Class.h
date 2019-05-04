@@ -5,6 +5,7 @@
 #include<vector>
 #include<windows.h>
 #include<time.h>
+#include<algorithm>
 
 using namespace std;
 
@@ -96,3 +97,11 @@ void ReadUserfile();
 void UserControl(person* user);
 string GetWord(int hard, int num, int allnum);
 bool GoodWord(int choice, char *word);
+void Rank(playertype type);
+bool cmp(player& a, player& b);
+bool cmq(questioner& a, questioner& b);
+void RefreshUser(const int ID, playertype type);
+void ShowRank();
+
+
+

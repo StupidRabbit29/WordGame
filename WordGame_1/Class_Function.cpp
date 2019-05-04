@@ -226,7 +226,7 @@ int questioner::GetQnum()
 
 /*修改对象中的信息*/
 //基类
-//闯关者？用不用
+//闯关者
 void player::SetEXP(int EXP)
 {
 	this->EXP = EXP;

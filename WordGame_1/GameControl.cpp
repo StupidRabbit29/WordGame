@@ -109,7 +109,4 @@ void GameControl(void)
 		}
 		}
 	}
-
-	//Ð´ÎÄµµ£¬±£´æ
-
 }

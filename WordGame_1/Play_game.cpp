@@ -102,6 +102,8 @@ void player::Play()
 	}
 	Setlevel(i);
 
+	Rank(PLAYER);
+
 	cout << "游戏结束！" << endl;
 }
 
@@ -176,6 +178,8 @@ void questioner::Play()
 			break;
 	}
 	Setlevel(i);
+
+	Rank(QUESTIONER);
 
 	cout << "游戏结束！" << endl;
 }

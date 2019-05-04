@@ -3,10 +3,6 @@
 extern bool DEBUG;
 extern vector<player>Player;
 extern vector<questioner>Questioner;
-extern vector<player>::iterator itp;
-extern vector<questioner>::iterator itq;
-extern int PlayerID;
-extern int QuestionerID;
 
 void UserControl(person* user)
 {
@@ -40,7 +36,9 @@ void UserControl(person* user)
 		}
 		case 1:
 		{
-
+			Rank(PLAYER);
+			Rank(QUESTIONER);
+			ShowRank();
 			break;
 		}
 		case 2:
