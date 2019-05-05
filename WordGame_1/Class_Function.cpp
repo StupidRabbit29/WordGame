@@ -12,8 +12,8 @@ person::person(const string& name, const string& password)
 		cout << "Two arguments constructor of person" << ID << " called" << endl;
 
 	setbasicinfo(name, password);
-	ID = level = rank = 0;
-
+	ID = rank = 0;
+	level = 1;
 }
 person::person(const string& name, const string& password, int ID, int level, int rank)
 {

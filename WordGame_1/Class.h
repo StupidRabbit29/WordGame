@@ -102,6 +102,10 @@ bool cmp(player& a, player& b);
 bool cmq(questioner& a, questioner& b);
 void RefreshUser(const int ID, playertype type);
 void ShowRank();
-
-
+void Search();
+void Findlevel(int level, playertype type);
+void Findrank(int rank, playertype type);
+void FindEXP(int EXP);
+void Findround(int round);
+void FindQnum(int Qnum);
 

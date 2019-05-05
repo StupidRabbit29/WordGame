@@ -43,7 +43,7 @@ void UserControl(person* user)
 		}
 		case 2:
 		{
-
+			Search();
 			break;
 		}
 		case 3: 

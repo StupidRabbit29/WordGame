@@ -21,6 +21,7 @@ void Rank(playertype type)
 		for (auto it = Player.begin(); it != Player.end(); it++)
 		{
 			(*it).Setrank(i);
+			WriteUserfile(it);
 			i++;
 		}
 
@@ -35,6 +36,7 @@ void Rank(playertype type)
 		for (auto it = Questioner.begin(); it != Questioner.end(); it++)
 		{
 			(*it).Setrank(i);
+			WriteUserfile(it);
 			i++;
 		}
 
