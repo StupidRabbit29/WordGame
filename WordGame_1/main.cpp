@@ -12,6 +12,7 @@ bool QuitSYSTEM = false;
 
 int main()
 {
+	//½øÈëÓÎÏ·
 	GameControl();
 
 	return 0;

@@ -8,11 +8,13 @@ extern vector<questioner>::iterator itq;
 extern int PlayerID;
 extern int QuestionerID;
 
+//用户注册程序
 void Sign_up(playertype type)
 {
 	if (DEBUG)
 		cout << "Sign_up called" << endl;
 
+	//输入合适用户名
 	bool rightname = false;
 	char tempname[21] = { '\0' };
 
@@ -32,6 +34,7 @@ void Sign_up(playertype type)
 			}			
 		}
 
+		//判断是否有重名
 		if (rightname)
 		{
 			if (samename(type, tempname))
@@ -42,6 +45,7 @@ void Sign_up(playertype type)
 		}
 	}
 
+	//输入合适的密码
 	bool rightpw = false;
 	char temppw[21] = { '\0' };
 
