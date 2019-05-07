@@ -13,8 +13,8 @@ void Search()
 
 	while (!quit)
 	{
+		//确定查找类型
 		playertype type;
-
 		int choice = 0;
 		cout << "请输入您想要查询的用户类型，闯关者（0），出题者（1）" << endl;
 
@@ -31,6 +31,7 @@ void Search()
 		else
 			type = QUESTIONER;
 
+		//打印提示信息
 		cout << "*******************请输入您的查询方式*******************" << endl
 			<< "                   0       按姓名查询" << endl
 			<< "                   1       按等级查询" << endl
@@ -45,6 +46,7 @@ void Search()
 		cout << "                   5       退出查询" << endl;
 		cout << "********************************************************" << endl;
 
+		//读取用户输入的选择
 		int searchtype = 0;
 		while (!(cin >> searchtype && (searchtype >= 0 && searchtype <= 5)))
 		{
@@ -54,6 +56,7 @@ void Search()
 		}
 		cin.ignore(100, '\n');
 
+		//退出查询操作
 		if (searchtype == 5)
 		{
 			quit = true;
@@ -62,6 +65,7 @@ void Search()
 
 		if (type == PLAYER)
 		{
+			//按用户名查找相应用户
 			if (searchtype == 0)
 			{
 				bool rightname = false;
@@ -97,6 +101,7 @@ void Search()
 				(*ptemp).Showinfo();
 			}
 			else if (searchtype == 1)
+				//查找所有等级与用户输入相符的用户
 			{
 				int level = 0;
 				cout << "请输入您想查询的等级" << endl;
@@ -111,6 +116,7 @@ void Search()
 				Findlevel(level, PLAYER);
 			}
 			else if (searchtype == 2)
+				//查找所有排名与用户输入相符的用户
 			{
 				int rank = 0;
 				cout << "请输入您想查询的排名" << endl;
@@ -125,6 +131,7 @@ void Search()
 				Findrank(rank, PLAYER);
 			}
 			else if (searchtype == 3)
+				//查找所有EXP与用户输入相符的用户
 			{
 				int EXP = 0;
 				cout << "请输入您想查询的EXP" << endl;
@@ -139,6 +146,7 @@ void Search()
 				FindEXP(EXP);
 			}
 			else if (searchtype == 4)
+				//查找所有闯关数与用户输入相符的用户
 			{
 				int round = 0;
 				cout << "请输入您想查询的round" << endl;
@@ -159,6 +167,7 @@ void Search()
 		}
 		else
 		{
+			//按用户名查找相应用户
 			if (searchtype == 0)
 			{
 				bool rightname = false;
@@ -194,6 +203,7 @@ void Search()
 				(*qtemp).Showinfo();
 			}
 			else if (searchtype == 1)
+				//查找所有等级与用户输入相符的用户
 			{
 				int level = 0;
 				cout << "请输入您想查询的等级" << endl;
@@ -208,6 +218,7 @@ void Search()
 				Findlevel(level, QUESTIONER);
 			}
 			else if (searchtype == 2)
+				//查找所有排名与用户输入相符的用户
 			{
 				int rank = 0;
 				cout << "请输入您想查询的排名" << endl;
@@ -222,6 +233,7 @@ void Search()
 				Findrank(rank, QUESTIONER);
 			}
 			else if (searchtype == 3)
+				//查找所有出题数与用户输入相符的用户
 			{
 				int Qnum = 0;
 				cout << "请输入您想查询的出题数" << endl;
@@ -244,7 +256,7 @@ void Search()
 	
 	cout << "查询已结束！" << endl;
 }
-
+//查找等级
 void Findlevel(int level, playertype type)
 {
 	if (type == PLAYER)
@@ -278,7 +290,7 @@ void Findlevel(int level, playertype type)
 			cout << "不存在等级为" << level << "的出题人" << endl;
 	}
 }
-
+//查找排名
 void Findrank(int rank, playertype type)
 {
 	if (type == PLAYER)
@@ -312,7 +324,7 @@ void Findrank(int rank, playertype type)
 			cout << "不存在排名为" << rank << "的出题人" << endl;
 	}
 }
-
+//查找经验值
 void FindEXP(int EXP)
 {
 	bool find = false;
@@ -328,7 +340,7 @@ void FindEXP(int EXP)
 	if (!find)
 		cout << "不存在EXP为" << EXP << "的闯关者" << endl;
 }
-
+//查找闯关数
 void Findround(int round)
 {
 	bool find = false;
@@ -344,7 +356,7 @@ void Findround(int round)
 	if (!find)
 		cout << "不存在round为" << round << "的闯关者" << endl;
 }
-
+//查找出题数
 void FindQnum(int Qnum)
 {
 	bool find = false;

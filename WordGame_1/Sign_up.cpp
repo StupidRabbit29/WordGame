@@ -68,6 +68,7 @@ void Sign_up(playertype type)
 
 	if (type == PLAYER)
 	{
+		//加入容器
 		player temp(tempname, temppw);
 		Player.push_back(temp);
 
@@ -79,6 +80,7 @@ void Sign_up(playertype type)
 		PlayerID = (*it).GetID();
 		QuestionerID = 0;
 
+		//写文档
 		stringstream ss;
 		string str;
 		ss << Player.size();
@@ -87,6 +89,7 @@ void Sign_up(playertype type)
 	}
 	else
 	{
+		//加入容器
 		questioner temp(tempname, temppw);
 		Questioner.push_back(temp);
 
@@ -98,6 +101,7 @@ void Sign_up(playertype type)
 		QuestionerID = (*it).GetID();
 		PlayerID = 0;
 
+		//写文档
 		stringstream ss;
 		string str;
 		ss << Questioner.size();
@@ -113,6 +117,7 @@ void Sign_up(playertype type)
 	Sign_out(type);
 }
 
+//检测重名的程序
 bool samename(playertype type, const string& name)
 {
 	bool same = false;

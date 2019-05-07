@@ -13,6 +13,7 @@ void UserControl(person* user)
 
 	while(!UserQuit)
 	{
+		//用户可选的操作提示
 		cout << "-----------请选择你的操作-----------" << endl
 			<< "           0：     开始游戏" << endl
 			<< "           1：     查看排名" << endl
@@ -30,11 +31,13 @@ void UserControl(person* user)
 		switch (choice)
 		{
 		case 0:
+			//开始游戏
 		{
 			user->Play();
 			break;
 		}
 		case 1:
+			//查看排名
 		{
 			Rank(PLAYER);
 			Rank(QUESTIONER);
@@ -42,11 +45,13 @@ void UserControl(person* user)
 			break;
 		}
 		case 2:
+			//查询模式
 		{
 			Search();
 			break;
 		}
 		case 3: 
+			//退出游戏
 		{
 			UserQuit = true;
 			break;

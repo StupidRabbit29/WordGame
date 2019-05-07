@@ -82,7 +82,7 @@ questioner::~questioner()
 		cout << "Destructor of questioner" << ID << " called" << endl;
 }
 
-
+/*修改对象中的信息*/
 //person
 void person::setbasicinfo(const string& name, const string& password)
 {
@@ -106,10 +106,22 @@ void player::setID()
 {
 	ID = Player.size();
 }
+void player::SetEXP(int EXP)
+{
+	this->EXP = EXP;
+}
+void player::Setround(int round)
+{
+	this->round = round;
+}
 //questioner
 void questioner::setID()
 {
 	ID = Questioner.size();
+}
+void questioner::SetQnum(int Q)
+{
+	this->Qnum = Q;
 }
 
 
@@ -224,19 +236,3 @@ int questioner::GetQnum()
 	return Qnum;
 }
 
-/*修改对象中的信息*/
-//基类
-//闯关者
-void player::SetEXP(int EXP)
-{
-	this->EXP = EXP;
-}
-void player::Setround(int round)
-{
-	this->round = round;
-}
-//出题者
-void questioner::SetQnum(int Q)
-{
-	this->Qnum = Q;
-}

@@ -7,11 +7,13 @@ vector<questioner>::iterator itq;
 int PlayerID;
 int QuestionerID;
 const int MAX_USER_NUMBER = 1024;
-bool DEBUG = true;
+bool DEBUG = false;
 bool QuitSYSTEM = false;
 
 int main()
 {
+	cout << "****************欢迎来到单词消除游戏_01****************" << endl;
+
 	//进入游戏
 	GameControl();
 

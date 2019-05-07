@@ -7,7 +7,7 @@ extern vector<player>::iterator itp;
 extern vector<questioner>::iterator itq;
 extern int PlayerID;
 extern int QuestionerID;
-
+//用户登录
 void Sign_in(playertype type)
 {
 	if (DEBUG)
@@ -18,6 +18,7 @@ void Sign_in(playertype type)
 	vector<player>::iterator ptemp;
 	vector<questioner>::iterator qtemp;
 
+	//判断用户输入的名字是否存在
 	while (!rightname)
 	{
 		cout << "请输入要登录的用户名（不超过20个字符）" << endl;
@@ -52,6 +53,7 @@ void Sign_in(playertype type)
 		}
 	}
 
+	//用户输入正确的密码
 	bool rightpw = false;
 	char temppw[21] = { '\0' };
 
@@ -109,7 +111,7 @@ void Sign_in(playertype type)
 
 	Sign_out(type);
 }
-
+//在游戏者中查找用户
 bool findUser(string name, vector<player>::iterator& temp)
 {
 	bool find = false;
@@ -124,7 +126,7 @@ bool findUser(string name, vector<player>::iterator& temp)
 
 	return find;
 }
-
+//在出题者中查找用户
 bool findUser(string name, vector<questioner>::iterator& temp)
 {
 	bool find = false;
@@ -139,7 +141,7 @@ bool findUser(string name, vector<questioner>::iterator& temp)
 
 	return find;
 }
-
+//检查密码正确性
 bool checkpw(string password, person* user)
 {
 	if (password == user->Getpassword())

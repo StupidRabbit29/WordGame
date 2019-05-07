@@ -13,6 +13,7 @@ void Sign_out(playertype type)
 	if (DEBUG)
 		cout << "Sign_out called" << endl;
 
+	//写文档
 	if (type == PLAYER)
 		WriteUserfile(itp);
 	else
@@ -117,7 +118,7 @@ void WriteUserfile(vector<questioner>::iterator temp)
 	str3 = tempstr.c_str();
 	WritePrivateProfileStringA(str1, "Qnum", str3, str2);
 }
-
+//从文档中读取用户信息，写入容器中
 void ReadUserfile()
 {
 	int playernum = 0;

@@ -5,7 +5,6 @@ extern vector<player>Player;
 extern vector<questioner>Questioner;
 extern bool QuitSYSTEM;
 
-using namespace std;
 void GameControl(void)
 {
 	//读取文档，加载游戏
@@ -13,7 +12,8 @@ void GameControl(void)
 
 	while (!QuitSYSTEM)
 	{
-		cout << "                 欢迎来到单词消除游戏_01" << endl
+		//打印提示信息
+		cout << "                      欢迎进入游戏 " << endl
 			<< "*******************************************************************" << endl
 			<< "                    您可以选择的操作有：" << endl
 			<< "                    输入：   操作：" << endl
@@ -34,12 +34,13 @@ void GameControl(void)
 		switch (choice)
 		{
 		case 0:
+			//退出系统
 		{
-
 			QuitSYSTEM = true;
 			break;
 		}
 		case 1:
+			//用户注册
 		{
 			cout << "选择要注册的用户类型：闯关者（0） or 出题者（1）" << endl;
 			bool righttype = false;
@@ -69,6 +70,7 @@ void GameControl(void)
 			break;
 		}
 		case 2:
+			//用户登录
 		{
 			cout << "选择要登录的用户类型：闯关者（0） or 出题者（1）" << endl;
 			bool righttype = false;
@@ -99,6 +101,11 @@ void GameControl(void)
 		}
 		case 3:
 		{
+			cout << "	单词消除游戏由两类参与者组成：闯关者（即游戏玩家），出题者（为游戏增加游戏中使用单词）。" << endl
+				<< "游戏规则为，游戏每一轮，程序会根据该关卡难度，显示一个单词，一定时间后单词消失。" << endl
+				<< "闯关者需要在相应地方输入刚刚显示并消失的单词，" << endl
+				<< "如果闯关者输入正确（即闯关者输入的单词与刚刚显示的单词完全一致，包含大小写）则为通过。" << endl
+				<< "一关可以由一轮或者多轮组成。" << endl;
 
 			break;
 		}
