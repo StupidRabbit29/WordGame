@@ -111,10 +111,7 @@ void player::Play()
 		if (PLevelUp[i] > EXP)
 			break;
 	}
-	Setlevel(i);
-
-	//对所有玩家重新排名
-	Rank(PLAYER);
+	Setlevel(i);	
 
 	cout << "游戏结束！" << endl;
 }
@@ -182,9 +179,6 @@ void questioner::Play()
 			break;
 	}
 	Setlevel(i);
-
-	//对所有出题者进行排名
-	Rank(QUESTIONER);
 
 	cout << "游戏结束！" << endl;
 }

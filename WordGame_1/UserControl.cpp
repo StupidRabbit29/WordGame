@@ -3,6 +3,8 @@
 extern bool DEBUG;
 extern vector<player>Player;
 extern vector<questioner>Questioner;
+extern vector<player>::iterator itp;
+extern vector<questioner>::iterator itq;
 
 void UserControl(person* user, playertype type)
 {
@@ -37,6 +39,12 @@ void UserControl(person* user, playertype type)
 			//开始游戏
 		{
 			user->Play();
+
+			////对所有玩家重新排名
+			//Rank(PLAYER);
+			////对所有出题者进行排名
+			//Rank(QUESTIONER);
+
 			break;
 		}
 		case 1:
@@ -45,6 +53,12 @@ void UserControl(person* user, playertype type)
 			Rank(PLAYER);
 			Rank(QUESTIONER);
 			ShowRank();
+
+			if (type == PLAYER)
+				user = &(*itp);
+			else
+				user = &(*itq);
+
 			break;
 		}
 		case 2:
