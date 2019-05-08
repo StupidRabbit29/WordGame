@@ -31,10 +31,16 @@ public:
 	string Getpassword();
 	void Setlevel(int level);
 	void Setrank(int rank);
-protected:
-	virtual void Showinfo();
-	int ID;
 
+	int FriendsNum();
+	void addfriend(int ID);
+	virtual void Showfriends()=0;
+	string SFriendID();
+protected:
+
+	virtual void Showinfo();
+	int ID;	
+	vector<int>friends;
 private:
 
 	string name;
@@ -59,6 +65,8 @@ public:
 	void Setround(int round);
 	int GetEXP();
 	int Getround();
+
+	virtual void Showfriends()override;
 private:
 	int EXP;
 	int round;
@@ -78,6 +86,8 @@ public:
 
 	void SetQnum(int Q);
 	int GetQnum();
+
+	virtual void Showfriends()override;
 private:
 	int Qnum;
 };
@@ -90,13 +100,15 @@ bool samename(playertype type, const string& name);
 void setpersonID(person* p);
 bool findUser(string name, vector<player>::iterator& temp);
 bool findUser(string name, vector<questioner>::iterator& temp);
+bool findUser(int ID, vector<player>::iterator& temp);
+bool findUser(int ID, vector<questioner>::iterator& temp);
 bool checkpw(string password, person* user);
 void WriteUserfile(vector<player>::iterator temp);
 void WriteUserfile(vector<questioner>::iterator temp);
 void ReadUserfile();
-void UserControl(person* user);
+void UserControl(person* user, playertype type);
 string GetWord(int hard, int num, int allnum);
-bool GoodWord(int choice, char *word);
+bool GoodWord(int& length, char *word);
 void Rank(playertype type);
 bool cmp(player& a, player& b);
 bool cmq(questioner& a, questioner& b);
@@ -108,4 +120,4 @@ void Findrank(int rank, playertype type);
 void FindEXP(int EXP);
 void Findround(int round);
 void FindQnum(int Qnum);
-
+void AddFriends(person* user, playertype type);

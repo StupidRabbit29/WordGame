@@ -105,9 +105,9 @@ void Sign_in(playertype type)
 	}
 
 	if (type == PLAYER)
-		UserControl(&(*itp));
+		UserControl(&(*itp), PLAYER);
 	else
-		UserControl(&(*itq));
+		UserControl(&(*itq), QUESTIONER);
 
 	Sign_out(type);
 }
@@ -133,6 +133,36 @@ bool findUser(string name, vector<questioner>::iterator& temp)
 
 	for (auto it = Questioner.begin(); it != Questioner.end(); it++)
 		if ((*it).Getname() == name)
+		{
+			find = true;
+			temp = it;
+			break;
+		}
+
+	return find;
+}
+//在游戏者中查找用户
+bool findUser(int ID, vector<player>::iterator& temp)
+{
+	bool find = false;
+
+	for (auto it = Player.begin(); it != Player.end(); it++)
+		if ((*it).GetID() == ID)
+		{
+			find = true;
+			temp = it;
+			break;
+		}
+
+	return find;
+}
+//在出题者中查找用户
+bool findUser(int ID, vector<questioner>::iterator& temp)
+{
+	bool find = false;
+
+	for (auto it = Questioner.begin(); it != Questioner.end(); it++)
+		if ((*it).GetID() == ID)
 		{
 			find = true;
 			temp = it;

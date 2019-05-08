@@ -129,43 +129,28 @@ void questioner::Play()
 
 	while (!finish)
 	{
-		cout << "输入1，退出游戏！" << endl << "请输入你想要添加的单词难度，4级（4），6级（6），8级（8）：" << endl
-			<< "              4级      5个字符以内" << endl
-			<< "              6级      5-9个字符  " << endl
-			<< "              8级      10个字符及以上,20个字符以下" << endl;
-
-		int choice = 1;
-		//用户选择
-		while (!(cin >> choice && (choice == 1 || choice == 4 || choice == 6 || choice == 8)))
-		{
-			if (cin.fail())
-			{
-				cin.clear();
-				cin.ignore(100, '\n');
-			}
-			else
-				cout << "输入错误，请重新输入" << endl;
-		}
-		cin.ignore(100, '\n');
-
-		//退出游戏
-		if (choice == 1)
-			break;
+		cout << "系统会根据你输入单词的长度（注意不超过20个），将其分为三类难度，分类方式如下：" << endl
+			<< "        4级      5个字符以内" << endl
+			<< "        6级      5-9个字符  " << endl
+			<< "        8级      10个字符及以上,20个字符以下" << endl;
 
 		//读取单词
 		cout << "请输入你想要输入的单词，一行一个，以回车换行，最后以行首的回车结尾" << endl;	
 		string filename(".\\Dictionary.ini");
-		stringstream ss;
-		ss << choice;
-		string sectionname;
-		ss >> sectionname;				
-		char word[21] = { '\0' };
+		char word[100] = { '\0' };
 
-		while (cin.getline(word, 20, '\n')&&word[0]!='\0')
+		while (cin.getline(word, 100, '\n')&&word[0]!='\0')
 		{
-			if (GoodWord(choice, word))
+			int length = 0;
+
+			if (GoodWord(length, word))
 				//根据长度组织单词，因此判断输入单词长度是否符合规范
 			{
+				stringstream ss;
+				ss << length;
+				string sectionname;
+				ss >> sectionname;
+
 				ss.str("");
 				ss.clear();
 				ss << GetPrivateProfileIntA(sectionname.c_str(), "number", 0, filename.c_str()) + 1;
@@ -185,6 +170,8 @@ void questioner::Play()
 				memset(word, 0, sizeof(word));
 			}
 		}
+
+		finish = true;
 	}
 
 	//判断出题者是否可以升级
@@ -232,23 +219,16 @@ string GetWord(int hard, int num, int allnum)
 }
 
 //判断出题者给出的单词是否合格
-bool GoodWord(int choice, char *word)
+bool GoodWord(int& length, char *word)
 {
-	if (choice == 4)
-	{
-		if (word[5] == '\0')
-			return true;
-	}
-	else if (choice == 6)
-	{
-		if (word[5] != '\0'&&word[9] == '\0')
-			return true;
-	}
+	if (word[5] == '\0')
+		length = 4;
+	else if (word[5] != '\0'&&word[9] == '\0')
+		length = 6;
+	else if (word[9] != '\0'&&word[20] == '\0')
+		length = 8;
 	else
-	{
-		if (word[9] != '\0')
-			return true;
-	}
+		return false;
 
-	return false;
+	return true;
 }

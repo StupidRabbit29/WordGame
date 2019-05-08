@@ -236,3 +236,81 @@ int questioner::GetQnum()
 	return Qnum;
 }
 
+/*FRIEND*/
+int person::FriendsNum()
+{
+	return friends.size();
+}
+void person::addfriend(int ID)
+{
+	bool exist = false;
+	for (auto it = friends.begin(); it != friends.end(); it++)
+		if ((*it) == ID)
+			exist = true;
+
+	if (!exist)
+		friends.push_back(ID);
+	else
+		cout << "Ta已经是您的好友" << endl;
+}
+string person::SFriendID()
+{
+	char Friend[30];
+	stringstream ss;
+
+	for (auto it = friends.begin(); it != friends.end(); it++)
+		ss << *it << ' ';
+
+	ss.getline(Friend, sizeof(Friend));	
+	return Friend;
+}
+
+void player::Showfriends()
+{
+	if (FriendsNum() > 0)
+	{
+		cout << "朋友圈：" << endl;
+		for (auto it = friends.begin(); it != friends.end(); )
+		{
+			vector<player>::iterator temp;
+			if (findUser(*it, temp))
+			{
+				(*temp).Showinfo();
+				it++;
+			}
+			else
+			{
+				it = friends.erase(it);
+			}
+		}
+	}
+	else
+	{
+		cout << "您还没有好友" << endl;
+	}
+}
+
+void questioner::Showfriends()
+{
+	if (FriendsNum() > 0)
+	{
+		cout << "朋友圈：" << endl;
+		for (auto it = friends.begin(); it != friends.end(); )
+		{
+			vector<questioner>::iterator temp;
+			if (findUser(*it, temp))
+			{
+				(*temp).Showinfo();
+				it++;
+			}
+			else
+			{
+				it = friends.erase(it);
+			}
+		}
+	}
+	else
+	{
+		cout << "您还没有好友" << endl;
+	}
+}

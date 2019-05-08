@@ -110,9 +110,9 @@ void Sign_up(playertype type)
 	}
 
 	if (type == PLAYER)
-		UserControl(&(*itp));
+		UserControl(&(*itp), PLAYER);
 	else
-		UserControl(&(*itq));
+		UserControl(&(*itq), QUESTIONER);
 
 	Sign_out(type);
 }

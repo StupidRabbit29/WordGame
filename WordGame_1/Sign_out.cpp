@@ -72,6 +72,17 @@ void WriteUserfile(vector<player>::iterator temp)
 	ss >> tempstr;
 	str3 = tempstr.c_str();
 	WritePrivateProfileStringA(str1, "round", str3, str2);
+
+	ss.str("");
+	ss.clear();
+	ss << (*temp).FriendsNum();
+	ss >> tempstr;
+	str3 = tempstr.c_str();
+	WritePrivateProfileStringA(str1, "Fnum", str3, str2);
+
+	tempstr = (*temp).SFriendID();
+	str3 = tempstr.c_str();
+	WritePrivateProfileStringA(str1, "Friends", str3, str2);
 }
 
 void WriteUserfile(vector<questioner>::iterator temp)
@@ -117,6 +128,17 @@ void WriteUserfile(vector<questioner>::iterator temp)
 	ss >> tempstr;
 	str3 = tempstr.c_str();
 	WritePrivateProfileStringA(str1, "Qnum", str3, str2);
+
+	ss.str("");
+	ss.clear();
+	ss << (*temp).FriendsNum();
+	ss >> tempstr;
+	str3 = tempstr.c_str();
+	WritePrivateProfileStringA(str1, "Fnum", str3, str2);
+
+	tempstr = (*temp).SFriendID();
+	str3 = tempstr.c_str();
+	WritePrivateProfileStringA(str1, "Friends", str3, str2);
 }
 //从文档中读取用户信息，写入容器中
 void ReadUserfile()
@@ -145,20 +167,35 @@ void ReadUserfile()
 		GetPrivateProfileStringA(pstr, "name", "", name, sizeof(name), str2);
 		char password[30] = { '\0' };
 		GetPrivateProfileStringA(pstr, "password", "", password, sizeof(password), str2);
+		char Friends[50] = { '\0' };
+		GetPrivateProfileStringA(pstr, "Friends", "", Friends, sizeof(Friends), str2);
+		string Friend(Friends);
 
 		int ID = 0;
 		int level = 0;
 		int rank = 0;
 		int EXP = 0;
 		int round = 0;
+		int Fnum = 0;
 
 		ID= GetPrivateProfileIntA(pstr, "ID", 0, str2);
 		level= GetPrivateProfileIntA(pstr, "level", 0, str2);
 		rank= GetPrivateProfileIntA(pstr, "rank", 0, str2);
 		EXP= GetPrivateProfileIntA(pstr, "EXP", 0, str2);
 		round = GetPrivateProfileIntA(pstr, "round", 0, str2);
+		Fnum = GetPrivateProfileIntA(pstr, "Fnum", 0, str2);
 
 		player temp(name, password, ID, level, rank, EXP, round);
+		ss.str("");
+		ss.clear();
+		ss << Friend;
+		for (int i = 0; i < Fnum; i++)
+		{
+			int ID;
+			ss >> ID;
+			temp.addfriend(ID);
+		}
+
 		Player.push_back(temp);
 
 		playernum--;
@@ -175,18 +212,33 @@ void ReadUserfile()
 		GetPrivateProfileStringA(qstr, "name", "", name, sizeof(name), str2);
 		char password[30] = { '\0' };
 		GetPrivateProfileStringA(qstr, "password", "", password, sizeof(password), str2);
+		char Friends[50] = { '\0' };
+		GetPrivateProfileStringA(qstr, "Friends", "", Friends, sizeof(Friends), str2);
+		string Friend(Friends);
 
 		int ID = 0;
 		int level = 0;
 		int rank = 0;
 		int Qnum = 0;
+		int Fnum = 0;
 
 		ID = GetPrivateProfileIntA(qstr, "ID", 0, str2);
 		level = GetPrivateProfileIntA(qstr, "level", 0, str2);
 		rank = GetPrivateProfileIntA(qstr, "rank", 0, str2);
 		Qnum = GetPrivateProfileIntA(qstr, "Qnum", 0, str2);
+		Fnum = GetPrivateProfileIntA(qstr, "Fnum", 0, str2);
 
 		questioner temp(name, password, ID, level, rank, Qnum);
+		ss.str("");
+		ss.clear();
+		ss << Friend;
+		for (int i = 0; i < Fnum; i++)
+		{
+			int ID;
+			ss >> ID;
+			temp.addfriend(ID);
+		}
+
 		Questioner.push_back(temp);
 
 		questionernum--;
