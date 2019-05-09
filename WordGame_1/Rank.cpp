@@ -17,7 +17,13 @@ void Rank(playertype type)
 	if (type == PLAYER)
 		//对闯关者排名
 	{
-		sort(Player.begin(), Player.end(), cmp);
+		cout << "请输入排名方式，按经验值（1），按等级（2），按闯关数（3）" << endl;
+		int choice;
+		cin >> choice;
+		if(choice==1||choice==2)
+			sort(Player.begin(), Player.end(), cmp);
+		else
+			sort(Player.begin(), Player.end(), cmp1);
 
 		//设置闯关者的rank
 		int i = 1;
@@ -55,6 +61,10 @@ bool cmp(player& a, player& b)
 {
 	return (a.Getlevel() > b.Getlevel()
 		|| a.Getlevel() == b.Getlevel() && a.GetEXP() > b.GetEXP());
+}
+bool cmp1(player& a, player& b)
+{
+	return (a.Getround() > b.Getround());
 }
 //对questioner比较，用于sort
 bool cmq(questioner& a, questioner& b)

@@ -16,7 +16,11 @@ void UserControl(person* user, playertype type)
 	while(!UserQuit)
 	{
 		//用户可选的操作提示
-		cout << "-----------请选择你的操作-----------" << endl
+		if (type == PLAYER)
+			cout << "-----闯关者:";
+		else
+			cout << "-----出题者:";
+		cout << user->Getname() <<"----请选择你的操作------" << endl
 			<< "           0：     开始游戏" << endl
 			<< "           1：     查看排名" << endl
 			<< "           2：     查找用户" << endl

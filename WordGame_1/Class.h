@@ -111,6 +111,7 @@ string GetWord(int hard, int num, int allnum);
 bool GoodWord(int& length, char *word);
 void Rank(playertype type);
 bool cmp(player& a, player& b);
+bool cmp1(player& a, player& b);
 bool cmq(questioner& a, questioner& b);
 void RefreshUser(const int ID, playertype type);
 void ShowRank();
