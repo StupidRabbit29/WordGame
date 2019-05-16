@@ -264,7 +264,7 @@ bool SameWord(int diff, char *word)
 
 	int num = GetPrivateProfileIntA(sdiff.c_str(), "number", 0, filename.c_str());
 
-	for (int i = 0; i < num; i++)
+	for (int i = 1; i <= num; i++)
 	{
 		string skey;
 		ss.str("");
