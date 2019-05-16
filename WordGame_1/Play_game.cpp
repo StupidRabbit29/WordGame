@@ -2,23 +2,23 @@
 
 extern bool DEBUG;
 
-//共15级，每级的单词难度和单词个数
-int GameDifficulty[15][2] = {
-	{4, 1},
-	{4, 2},
-	{4, 3},
-	{4, 4},
-	{4, 5},
-	{6, 3},
-	{6, 4},
-	{6, 5},
-	{6, 6},
-	{6, 7},
-	{8, 5}, 
-	{8, 6}, 
-	{8, 7}, 
-	{8, 8},
-	{8, 9}
+//共15级，每级的单词难度和单词个数和单词显示时间
+int GameDifficulty[15][3] = {
+	{4, 1, 1900},
+	{4, 2, 1900},
+	{4, 3, 1900},
+	{4, 4, 1900},
+	{4, 5, 1900},
+	{6, 3, 1800},
+	{6, 4, 1800},
+	{6, 5, 1800},
+	{6, 6, 1700},
+	{6, 7, 1600},
+	{8, 5, 1500}, 
+	{8, 6, 1400}, 
+	{8, 7, 1300}, 
+	{8, 8, 1200},
+	{8, 9, 1100}
 };
 
 //闯关者升级所需要的EXP
@@ -68,9 +68,11 @@ void player::Play()
 	//根据闯关者等级设置关卡难度
 	int hard;
 	int wordnum;
+	int sleeptime;
 	int userlevel = Getlevel();
 	hard = GameDifficulty[userlevel - 1][0];
 	wordnum = GameDifficulty[userlevel - 1][1];
+	sleeptime = GameDifficulty[userlevel - 1][2];
 
 	bool KO = true;
 
@@ -79,19 +81,33 @@ void player::Play()
 	{
 		//从词库中获取单词
 		string word = GetWord(hard, i + 1, wordnum);
-		cout << word;
+
+		cout << "准备！\t";
+		for (int j = 0; j < 5; j++)
+		{		
+			Sleep(500);
+			cout << (5 - j) << "\t";
+		}
 		//展示单词
-		Sleep(2000);
-		cout << "\r" << "请输入您的答案：";
+		cout <<'\n'<< word;
+		Sleep(sleeptime);
+		cout << "\r" << "请输入您的答案：                                \n";
+
+		clock_t start, finish, interval;
+		start = clock();
 		//读取用户输入
 		string ans;
 		cin >> ans;
+		finish = clock();
+		interval = finish - start;
 
 		//判断答案正误
 		if (strcmp(ans.c_str(), word.c_str()) == 0)
 		{
-			cout << "答案正确，再接再厉，加油！" << endl;
-			EXP += 100;
+			if(i<wordnum-1)
+				cout << "答案正确，再接再厉，加油！" << endl;
+
+			EXP += 100 + (hard - 2) * 10 + (i + 1) * 5 - (interval / CLOCKS_PER_SEC) * 3;
 		}
 		else
 		{
@@ -102,7 +118,10 @@ void player::Play()
 
 	//成功闯关数增加
 	if (KO == true)
+	{
 		round++;
+		cout << "闯关成功！\n";
+	}
 	
 	//判断是否可以升级
 	int i = 0;
@@ -143,6 +162,12 @@ void questioner::Play()
 			if (GoodWord(length, word))
 				//根据长度组织单词，因此判断输入单词长度是否符合规范
 			{
+				if (SameWord(length, word))
+				{
+					memset(word, 0, sizeof(word));
+					cout << "该单词已存在，请继续输入！" << endl;
+					continue;
+				}
 				stringstream ss;
 				ss << length;
 				string sectionname;
@@ -225,4 +250,34 @@ bool GoodWord(int& length, char *word)
 		return false;
 
 	return true;
+}
+
+bool SameWord(int diff, char *word)
+{
+	bool Same = false;
+
+	stringstream ss;
+	ss << diff;
+	string sdiff;
+	ss >> sdiff;
+	string filename(".\\Dictionary.ini");
+
+	int num = GetPrivateProfileIntA(sdiff.c_str(), "number", 0, filename.c_str());
+
+	for (int i = 1; i <= num; i++)
+	{
+		string skey;
+		ss.str("");
+		ss.clear();
+		ss << i;
+		ss >> skey;
+		char tempword[100]{ '\0' };
+
+		GetPrivateProfileStringA(sdiff.c_str(), skey.c_str(), "", tempword, sizeof(tempword), filename.c_str());
+		
+		if (strcmp(tempword, word) == 0)
+			Same = true;
+	}
+
+	return Same;
 }

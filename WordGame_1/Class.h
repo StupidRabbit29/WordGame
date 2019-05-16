@@ -122,3 +122,4 @@ void FindEXP(int EXP);
 void Findround(int round);
 void FindQnum(int Qnum);
 void AddFriends(person* user, playertype type);
+bool SameWord(int diff, char *word);
