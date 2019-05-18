@@ -8,7 +8,7 @@ extern vector<questioner>::iterator itq;
 extern int PlayerID;
 extern int QuestionerID;
 
-void Sign_out(playertype type)
+void Sign_out(playertype type, MySoc * MsClient)
 {
 	if (DEBUG)
 		cout << "Sign_out called" << endl;
@@ -19,7 +19,7 @@ void Sign_out(playertype type)
 	else
 		WriteUserfile(itq);
 
-	PlayerID = QuestionerID = 0;
+	MsClient->PlayerID = MsClient->QuestionerID = 0;
 }
 
 void WriteUserfile(vector<player>::iterator temp)

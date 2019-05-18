@@ -1,4 +1,6 @@
 #pragma once
+#include <Winsock2.h>
+#include <mstcpip.h>
 #include<iostream>
 #include<sstream>
 #include<string>
@@ -6,10 +8,18 @@
 #include<windows.h>
 #include<time.h>
 #include<algorithm>
+#include <process.h>
 
 using namespace std;
 
 enum playertype{ PLAYER, QUESTIONER };
+
+#define PORT           51500    //端口号
+#define MSGSIZE        1024     //最大数据长度
+#define MAX_CLIENT     10       //最大客户端口数
+
+// tcp keepalive结构体
+typedef struct tcp_keepalive TCP_KEEPALIVE;
 
 /*类定义*/
 //基类：人
@@ -22,7 +32,7 @@ public:
 
 	void setbasicinfo(const string& name, const string& password);
 	virtual void setID()=0;
-	virtual void Play()=0;
+	virtual void Play(struct MySoc * MsClient)=0;
 
 	int Getlevel();
 	int Getrank();
@@ -38,7 +48,7 @@ public:
 	string SFriendID();
 protected:
 
-	virtual void Showinfo();
+	virtual void Showinfo(struct info& info);
 	int ID;	
 	vector<int>friends;
 private:
@@ -57,8 +67,8 @@ public:
 	player(const string&, const string&, int, int, int, int, int);
 	virtual ~player();
 
-	virtual void Showinfo()override;
-	virtual void Play()override;
+	virtual void Showinfo(struct info& info)override;
+	virtual void Play(struct MySoc * MsClient)override;
 	virtual void setID()override;
 	
 	void SetEXP(int EXP);
@@ -80,8 +90,8 @@ public:
 	questioner(const string&, const string&, int, int, int, int);
 	virtual ~questioner();
 
-	virtual void Showinfo()override;
-	virtual void Play()override;
+	virtual void Showinfo(struct info& info)override;
+	virtual void Play(struct MySoc * MsClient)override;
 	virtual void setID()override;
 
 	void SetQnum(int Q);
@@ -92,10 +102,33 @@ private:
 	int Qnum;
 };
 
-void GameControl(void);
-void Sign_up(playertype type);
-void Sign_in(playertype type);
-void Sign_out(playertype type);
+typedef struct info
+{
+	char name[30];
+	int level;
+	int rank;
+	playertype type;
+	int EXP;
+	int round;
+	int Qnum;
+}Info;
+
+typedef struct MySoc
+{
+	SOCKET sClient;
+	SOCKADDR_IN ClientAddr;
+	int iaddrSize;
+	int TrdNum;
+	vector<player>::iterator itp;
+	vector<questioner>::iterator itq;
+	int PlayerID;
+	int QuestionerID;
+}MySoc;
+
+void GameControl(MySoc * MsClient);
+void Sign_up(playertype type, MySoc * MsClient);
+void Sign_in(playertype type, MySoc * MsClient);
+void Sign_out(playertype type, MySoc * MsClient);
 bool samename(playertype type, const string& name);
 void setpersonID(person* p);
 bool findUser(string name, vector<player>::iterator& temp);
@@ -106,14 +139,14 @@ bool checkpw(string password, person* user);
 void WriteUserfile(vector<player>::iterator temp);
 void WriteUserfile(vector<questioner>::iterator temp);
 void ReadUserfile();
-void UserControl(person* user, playertype type);
+void UserControl(playertype type, MySoc * MsClient);
 string GetWord(int hard, int num, int allnum);
 bool GoodWord(int& length, char *word);
-void Rank(playertype type);
+void Rank(playertype type, MySoc * MsClient);
 bool cmp(player& a, player& b);
 bool cmp1(player& a, player& b);
 bool cmq(questioner& a, questioner& b);
-void RefreshUser(const int ID, playertype type);
+void RefreshUser(const int ID, playertype type, MySoc * MsClient);
 void ShowRank();
 void Search();
 void Findlevel(int level, playertype type);
@@ -123,3 +156,10 @@ void Findround(int round);
 void FindQnum(int Qnum);
 void AddFriends(person* user, playertype type);
 bool SameWord(int diff, char *word);
+
+
+unsigned __stdcall TrdController(void* pArguments);
+unsigned __stdcall MySocketThread(void* pArguments);
+bool Full(bool *p, int size);
+int GetEmptyTrd(bool *p, int size);
+

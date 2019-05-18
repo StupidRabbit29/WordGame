@@ -6,62 +6,81 @@ extern vector<questioner>Questioner;
 extern vector<player>::iterator itp;
 extern vector<questioner>::iterator itq;
 
-void UserControl(person* user, playertype type)
+void UserControl(playertype type, MySoc * MsClient)
 {
 	if (DEBUG)
 		cout << "UserControl is called" << endl;
 
+	person *user;
+	if (type == PLAYER)
+		user = &(*(MsClient->itp));
+	else
+		user = &(*(MsClient->itq));
+	
 	bool UserQuit = false;
+	string str0 = "";
 
 	while(!UserQuit)
 	{
 		//用户可选的操作提示
+		string str1;
 		if (type == PLAYER)
-			cout << "-----闯关者:";
+			str1 = "-----闯关者:";
 		else
-			cout << "-----出题者:";
-		cout << user->Getname() <<"----请选择你的操作------" << endl
-			<< "           0：     开始游戏" << endl
-			<< "           1：     查看排名" << endl
-			<< "           2：     查找用户" << endl
-			<< "           3：     退出" << endl
-			<< "           4：     查看好友列表" << endl
-			<< "           5：     添加好友" << endl
-			<< "------------------------------------" << endl;
+			str1 = "-----出题者:";
 
-		int choice = 0;
-		while (!(cin >> choice))
+		string str2 = user->Getname();
+		string str3 = "----请选择你的操作------\n";
+		string str4 = "           0：     开始游戏\n";
+		string str5 = "           1：     查看排名\n";
+		string str6 = "           2：     查找用户\n";
+		string str7 = "           3：     退出\n";
+		string str8 = "           4：     查看好友列表\n";
+		string str9 = "           5：     添加好友\n";
+		string str10 = "------------------------------------";
+		str1 = str0 + str1 + str2 + str3 + str4 + str5 + str6 + str7 + str8 + str9 + str10;
+		char temp[MSGSIZE] = { '\0' };
+		strcpy_s(temp, str1.c_str());
+		send(MsClient->sClient, temp, MSGSIZE, 0);
+
+		int choice = -1;
+		bool Get = false;
+		while (!Get)
 		{
-			cin.clear();
-			cin.ignore(100, '\n');
+			char GetChoice[MSGSIZE + 1] = { '\0' };
+			recv(MsClient->sClient, GetChoice, MSGSIZE, 0);
+			stringstream ss;
+			ss << GetChoice;
+			ss >> choice;
+			if (!(choice == 0 || choice == 1 || choice == 2 || choice == 3||choice==4||choice==5))
+			{
+				char temp[MSGSIZE] = "请重新输入操作选项";
+				send(MsClient->sClient, temp, MSGSIZE, 0);
+			}
+			else
+				Get = true;
 		}
-		cin.ignore(100, '\n');
 
 		switch (choice)
 		{
 		case 0:
 			//开始游戏
 		{
-			user->Play();
-
-			////对所有玩家重新排名
-			//Rank(PLAYER);
-			////对所有出题者进行排名
-			//Rank(QUESTIONER);
+			user->Play(MsClient);
 
 			break;
 		}
 		case 1:
 			//查看排名
 		{
-			Rank(PLAYER);
-			Rank(QUESTIONER);
+			Rank(PLAYER, MsClient);
+			Rank(QUESTIONER, MsClient);
 			ShowRank();
 
 			if (type == PLAYER)
-				user = &(*itp);
+				user = &(*(MsClient->itp));
 			else
-				user = &(*itq);
+				user = &(*(MsClient->itq));
 
 			break;
 		}
@@ -91,7 +110,7 @@ void UserControl(person* user, playertype type)
 		}
 		default:
 		{
-			cout << "操作不存在，请重新输入！" << endl;
+			str0 = "操作不存在，请重新输入！\n";
 			break;
 		}
 		}

@@ -3,13 +3,10 @@
 extern bool DEBUG;
 extern vector<player>Player;
 extern vector<questioner>Questioner;
-extern vector<player>::iterator itp;
-extern vector<questioner>::iterator itq;
-extern int PlayerID;
-extern int QuestionerID;
+extern MySoc *TempBuffer[MAX_CLIENT];
 
 //排名
-void Rank(playertype type)
+void Rank(playertype type, MySoc * MsClient)
 {
 	if (DEBUG)
 		cout << "rank is called" << endl;
@@ -17,13 +14,13 @@ void Rank(playertype type)
 	if (type == PLAYER)
 		//对闯关者排名
 	{
-		cout << "请输入排名方式，按经验值（1），按等级（2），按闯关数（3）" << endl;
-		int choice;
-		cin >> choice;
-		if(choice==1||choice==2)
-			sort(Player.begin(), Player.end(), cmp);
-		else
-			sort(Player.begin(), Player.end(), cmp1);
+		//cout << "请输入排名方式，按经验值（1），按等级（2），按闯关数（3）" << endl;
+		//int choice;
+		//cin >> choice;
+		//if(choice==1||choice==2)
+		sort(Player.begin(), Player.end(), cmp);
+		//else
+			//sort(Player.begin(), Player.end(), cmp1);
 
 		//设置闯关者的rank
 		int i = 1;
@@ -34,8 +31,12 @@ void Rank(playertype type)
 			i++;
 		}
 
-		if (PlayerID != 0)
-			RefreshUser(PlayerID, PLAYER);
+		for (int i = 0; i < MAX_CLIENT; i++)
+		{
+			if (TempBuffer[i]->PlayerID != 0)
+				RefreshUser(TempBuffer[i]->PlayerID, PLAYER, TempBuffer[i]);
+		}
+		
 	}
 	else
 		//对出题者排名
@@ -51,8 +52,11 @@ void Rank(playertype type)
 			i++;
 		}
 
-		if (QuestionerID != 0)
-			RefreshUser(QuestionerID, QUESTIONER);
+		for (int i = 0; i < MAX_CLIENT; i++)
+		{
+			if (TempBuffer[i]->QuestionerID != 0)
+				RefreshUser(TempBuffer[i]->QuestionerID, PLAYER, TempBuffer[i]);
+		}
 	}
 }
 
@@ -73,7 +77,7 @@ bool cmq(questioner& a, questioner& b)
 		|| a.Getlevel() == b.Getlevel() && a.GetQnum() > b.GetQnum());
 }
 
-void RefreshUser(const int ID, playertype type)
+void RefreshUser(const int ID, playertype type, MySoc * MsClient)
 {
 	if (type == PLAYER)
 	{
@@ -81,7 +85,7 @@ void RefreshUser(const int ID, playertype type)
 		{
 			if ((*it).GetID() == ID)
 			{
-				itp = it;
+				MsClient->itp = it;
 				break;
 			}
 		}
@@ -92,7 +96,7 @@ void RefreshUser(const int ID, playertype type)
 		{
 			if ((*it).GetID() == ID)
 			{
-				itq = it;
+				MsClient->itq = it;
 				break;
 			}
 		}
@@ -100,13 +104,27 @@ void RefreshUser(const int ID, playertype type)
 }
 
 //展示排名
-void ShowRank()
+void ShowRank(MySoc * MsClient)
 {
-	cout << "闯关者排名：" << endl;
+	send(MsClient->sClient, "BeginToSendRankTable", MSGSIZE, 0);
+	
+	send(MsClient->sClient, "闯关者排名：", MSGSIZE, 0);
 	for (auto it = Player.begin(); it != Player.end(); it++)
-		(*it).Showinfo();
+	{
+		send(MsClient->sClient, "BeginToShowInfo", MSGSIZE, 0);
+		Info info;
+		(*it).Showinfo(info);
+		send(MsClient->sClient, (char*)&info, MSGSIZE, 0);
+	}
 
-	cout << "出题者排名：" << endl;
+	send(MsClient->sClient, "出题者排名：", MSGSIZE, 0);
 	for (auto it = Questioner.begin(); it != Questioner.end(); it++)
-		(*it).Showinfo();
+	{
+		send(MsClient->sClient, "BeginToShowInfo", MSGSIZE, 0);
+		Info info;
+		(*it).Showinfo(info);
+		send(MsClient->sClient, (char*)&info, MSGSIZE, 0);
+	}
+
+	send(MsClient->sClient, "SendRankTableEND", MSGSIZE, 0);
 }

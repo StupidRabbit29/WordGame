@@ -3,13 +3,11 @@
 extern bool DEBUG;
 extern vector<player>Player;
 extern vector<questioner>Questioner;
-extern vector<player>::iterator itp;
-extern vector<questioner>::iterator itq;
-extern int PlayerID;
-extern int QuestionerID;
+
 //用户登录
-void Sign_in(playertype type)
+void Sign_in(playertype type, MySoc *MsClient)
 {
+
 	if (DEBUG)
 		cout << "Sign_in called" << endl;
 
@@ -18,29 +16,38 @@ void Sign_in(playertype type)
 	vector<player>::iterator ptemp;
 	vector<questioner>::iterator qtemp;
 
+	string str1 = "请输入要登录的用户名（不超过20个字符）";
+	string str2 = "";
 	//判断用户输入的名字是否存在
 	while (!rightname)
 	{
-		cout << "请输入要登录的用户名（不超过20个字符）" << endl;
-		if (cin.getline(tempname, 20) && tempname[0] != '\0')
-			rightname = true;
-		else
+		char temp[MSGSIZE] = { '\0' };
+		string str = str2 + str1;
+		strcpy_s(temp, str.c_str());
+		send(MsClient->sClient, temp, MSGSIZE, 0);
+		
+		char Get[MSGSIZE] = { '\0' };
+		recv(MsClient->sClient, Get, MSGSIZE, 0);
+
+		if (Get[0] != '\0')
 		{
-			cout << "输入错误,";
+			rightname = true;
 			memset(tempname, 0, sizeof(tempname));
-			if (!cin.good())
-			{
-				cin.clear();
-				cin.ignore(100, '\n');
-			}
+			strncpy_s(tempname, Get, 20);
+			if (DEBUG)
+				cout << tempname << endl;
+			tempname[20] = '\0';
 		}
+		else
+			str2 = "输入错误,";
 
 		if (rightname == true && type == PLAYER)
 		{
 			if (!findUser(tempname, ptemp))
 			{
 				rightname = false;
-				cout << "用户不存在！" << endl;
+				str2.erase();
+				str2 = "用户不存在！";
 			}
 		}
 		else if(rightname==true && type==QUESTIONER)
@@ -48,7 +55,8 @@ void Sign_in(playertype type)
 			if (!findUser(tempname, qtemp))
 			{
 				rightname = false;
-				cout << "用户不存在！" << endl;
+				str2.erase();
+				str2 = "用户不存在！";
 			}
 		}
 	}
@@ -57,28 +65,34 @@ void Sign_in(playertype type)
 	bool rightpw = false;
 	char temppw[21] = { '\0' };
 
+	str1 = "请输入密码（多于8个字符且不超过20个字符）：";
+	str2 = "";
 	while (!rightpw)
 	{
-		cout << "请输入密码（多于8个字符且不超过20个字符）：" << endl;
-		if (cin.getline(temppw, 20) && temppw[8] != '\0')
-			rightpw = true;
-		else
-		{
-			cout << "输入错误,";
-			memset(temppw, 0, sizeof(temppw));
-			if (!cin.good())
-			{
-				cin.clear();
-				cin.ignore(100, '\n');
-			}
-		}
+		char temp[MSGSIZE] = { '\0' };
+		string str = str2 + str1;
+		strcpy_s(temp, str.c_str());
+		send(MsClient->sClient, temp, MSGSIZE, 0);
 
+		char Get[MSGSIZE] = { '\0' };
+		recv(MsClient->sClient, Get, MSGSIZE, 0);
+
+		if (Get[8] != '\0')
+		{
+			rightpw = true;
+			strncpy_s(temppw, Get, 20);
+			temppw[20] = '\0';
+		}
+		else
+			str2 = "输入错误,";
+	
 		if (rightpw && type == PLAYER)
 		{
 			if (!checkpw(temppw, &(*ptemp)))
 			{
 				rightpw = false;
-				cout << "密码错误，请重新输入！" << endl;
+				str2.erase();
+				str2 = "密码错误，请重新输入！";
 			}
 		}
 		else if (rightpw && type == QUESTIONER)
@@ -86,30 +100,31 @@ void Sign_in(playertype type)
 			if (!checkpw(temppw, &(*qtemp)))
 			{
 				rightpw = false;
-				cout << "密码错误，请重新输入！" << endl;
+				str2.erase();
+				str2 = "密码错误，请重新输入！";
 			}
 		}
 	}
 
 	if (type == PLAYER)
 	{
-		itp = ptemp;
-		PlayerID = (*itp).GetID();
-		QuestionerID = 0;
+		MsClient->itp = ptemp;
+		MsClient->PlayerID = (*ptemp).GetID();	
+		MsClient->QuestionerID = 0;
 	}
 	else
 	{
-		itq = qtemp;
-		QuestionerID = (*itq).GetID();
-		PlayerID = 0;
+		MsClient->itq = qtemp;
+		MsClient->QuestionerID = (*qtemp).GetID();
+		MsClient->PlayerID = 0;
 	}
 
 	if (type == PLAYER)
-		UserControl(&(*itp), PLAYER);
+		UserControl(PLAYER, MsClient);
 	else
-		UserControl(&(*itq), QUESTIONER);
+		UserControl(QUESTIONER, MsClient);
 
-	Sign_out(type);
+	Sign_out(type, MsClient);
 }
 //在游戏者中查找用户
 bool findUser(string name, vector<player>::iterator& temp)

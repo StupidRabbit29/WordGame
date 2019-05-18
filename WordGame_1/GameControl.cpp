@@ -5,31 +5,53 @@ extern vector<player>Player;
 extern vector<questioner>Questioner;
 extern bool QuitSYSTEM;
 
-void GameControl(void)
+void GameControl(MySoc *MsClient)
 {
-	//读取文档，加载游戏
-	ReadUserfile();
+	////读取文档，加载游戏
+	//ReadUserfile();
+	if (DEBUG)
+		cout << "Called GameControl" << endl;
 
 	while (!QuitSYSTEM)
 	{
 		//打印提示信息
-		cout << "                       欢迎进入游戏 " << endl
-			<< "*******************************************************************" << endl
-			<< "                    您可以选择的操作有：" << endl
-			<< "                    输入：   操作：" << endl
-			<< "                    0：      退出系统" << endl
-			<< "                    1：      用户注册" << endl
-			<< "                    2：      用户登录" << endl
-			<< "                    3：      查看帮助" << endl
-			<< "*******************************************************************" << endl;
+		string str1 = "******************欢迎来到单词消除游戏_03****************\n";
+		string str2 = "                       欢迎进入游戏 \n";
+		string str3 = "*******************************************************************\n";
+		string str4 = "                    您可以选择的操作有：\n";
+		string str5 = "                    输入：   操作：\n";
+		string str6 = "                    0：      退出系统\n";
+		string str7 = "                    1：      用户注册\n";
+		string str8 = "                    2：      用户登录\n";
+		string str9 = "                    3：      查看帮助\n";
+		string str10 = "*******************************************************************";
+		str1 = str1 + str2 + str3 + str4 + str5 + str6 + str7 + str8 + str9 + str10;
 
-		int choice = 0;
-		while (!(cin >> choice))
+		char temp[MSGSIZE];
+		strcpy_s(temp, str1.c_str());
+		send(MsClient->sClient, temp, MSGSIZE, 0);
+		
+		int choice = -1;
+		bool Get = false;
+		while (!Get)
 		{
-			cin.clear();
-			cin.ignore(1000, '\n');
+			char GetChoice[MSGSIZE+1] = { '\0' };
+			recv(MsClient->sClient, GetChoice, MSGSIZE, 0);
+			stringstream ss;
+			ss << GetChoice;
+			ss >> choice;
+			if (!(choice == 0 || choice == 1 || choice == 2 || choice == 3))
+			{
+				char temp[MSGSIZE] = "请重新输入操作选项";
+				send(MsClient->sClient, temp, MSGSIZE, 0);
+			}
+			else
+				Get = true;
 		}
-		cin.get();
+
+		string stemp;
+		int choice2 = -1;
+		Get = false;
 
 		switch (choice)
 		{
@@ -42,76 +64,86 @@ void GameControl(void)
 		case 1:
 			//用户注册
 		{
-			cout << "选择要注册的用户类型：闯关者（0） or 出题者（1）" << endl;
-			bool righttype = false;
-			while (!righttype)
+			memset(temp, 0, sizeof(temp));
+			stemp = "选择要注册的用户类型：闯关者（0） or 出题者（1）";
+			strcpy_s(temp, stemp.c_str());
+			send(MsClient->sClient, temp, MSGSIZE, 0);
+
+			while (!Get)
 			{
-				int type = 0;
-				cin >> type;
-				cin.get();
-				if (cin.good() && type == 0)
+				char GetChoice[MSGSIZE+1] = { '\0' };
+				recv(MsClient->sClient, GetChoice, MSGSIZE, 0);
+				stringstream ss;
+				ss << GetChoice;
+				choice2 = -1;
+				ss >> choice2;
+				if (!(choice2 == 0 || choice2 == 1))
 				{
-					righttype = true;
-					Sign_up(PLAYER);
-				}
-				else if (cin.good() && type == 1)
-				{
-					righttype = true;
-					Sign_up(QUESTIONER);
+					char temp[MSGSIZE] = "请重新输入";
+					send(MsClient->sClient, temp, MSGSIZE, 0);
 				}
 				else
-				{
-					cin.clear();
-					cin.ignore(1000, '\n');
-					cout << "输入错误，请重新输入：" << endl;
-				}
+					Get = true;
+			}
+
+			if (choice2 == 0)
+			{
+				Sign_up(PLAYER, MsClient);
+			}
+			else if (choice2 == 1)
+			{
+				Sign_up(QUESTIONER, MsClient);
 			}
 
 			break;
 		}
 		case 2:
 			//用户登录
-		{
-			cout << "选择要登录的用户类型：闯关者（0） or 出题者（1）" << endl;
-			bool righttype = false;
-			while (!righttype)
+		{	
+			memset(temp, 0, sizeof(temp));
+			stemp = "选择要登录的用户类型：闯关者（0） or 出题者（1）";
+			strcpy_s(temp, stemp.c_str());
+			send(MsClient->sClient, temp, MSGSIZE, 0);
+
+			while (!Get)
 			{
-				int type = 0;
-				cin >> type;
-				cin.get();
-				if (cin.good() && type == 0)
+				char GetChoice[MSGSIZE+1] = { '\0' };
+				recv(MsClient->sClient, GetChoice, MSGSIZE, 0);
+				stringstream ss;
+				ss << GetChoice;
+				choice2 = -1;
+				ss >> choice2;
+				if (!(choice2 == 0 || choice2 == 1))
 				{
-					righttype = true;
-					Sign_in(PLAYER);
-				}
-				else if (cin.good() && type == 1)
-				{
-					righttype = true;
-					Sign_in(QUESTIONER);
+					char temp[MSGSIZE] = "请重新输入";
+					send(MsClient->sClient, temp, MSGSIZE, 0);
 				}
 				else
-				{
-					cin.clear();
-					cin.ignore(1000, '\n');
-					cout << "输入错误，请重新输入：" << endl;
-				}
+					Get = true;
 			}
 
+			if (choice2 == 0)
+			{
+				Sign_in(PLAYER, MsClient);
+			}
+			else if (choice2 == 1)
+			{
+				Sign_in(QUESTIONER, MsClient);
+			}
+			
 			break;
 		}
 		case 3:
 		{
-			cout << "	单词消除游戏由两类参与者组成：闯关者（即游戏玩家），出题者（为游戏增加游戏中使用单词）。" << endl
-				<< "游戏规则为，游戏每一轮，程序会根据该关卡难度，显示一个单词，一定时间后单词消失。" << endl
-				<< "闯关者需要在相应地方输入刚刚显示并消失的单词，" << endl
-				<< "如果闯关者输入正确（即闯关者输入的单词与刚刚显示的单词完全一致，包含大小写）则为通过。" << endl
-				<< "一关可以由一轮或者多轮组成。" << endl;
+			char help[MSGSIZE] = "	单词消除游戏由两类参与者组成：闯关者（即游戏玩家），出题者（为游戏增加游戏中使用单词）。\n游戏规则为，游戏每一轮，程序会根据该关卡难度，显示一个单词，一定时间后单词消失。\n闯关者需要在相应地方输入刚刚显示并消失的单词，\n如果闯关者输入正确（即闯关者输入的单词与刚刚显示的单词完全一致，包含大小写）则为通过。\n一关可以由一轮或者多轮组成。";
+			send(MsClient->sClient, help, MSGSIZE, 0);
+			char Gethelp[MSGSIZE+1] = { '\0' };
+			recv(MsClient->sClient, Gethelp, MSGSIZE, 0);
 
 			break;
 		}
 		default:
 		{
-			cout << "输入的操作不存在！" << endl;
 			break;
 		}
 		}

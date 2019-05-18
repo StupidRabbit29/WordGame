@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{B0B8A51A-7BAE-4B10-ADFE-F5CC2BCD8490}</ProjectGuid>
-    <RootNamespace>WordGame_1</RootNamespace>
+    <ProjectGuid>{6E5BEB60-BB7D-4293-A2B1-AD11E7E55418}</ProjectGuid>
+    <RootNamespace>Server</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -111,25 +111,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Class_Function.cpp" />
-    <ClCompile Include="GameControl.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Play_game.cpp" />
-    <ClCompile Include="Quit_system.cpp" />
-    <ClCompile Include="Rank.cpp" />
-    <ClCompile Include="Search.cpp" />
-    <ClCompile Include="Server.cpp" />
-    <ClCompile Include="Sign_in.cpp" />
-    <ClCompile Include="Sign_out.cpp" />
-    <ClCompile Include="Sign_up.cpp" />
-    <ClCompile Include="UserControl.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Class.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Dictionary.ini" />
-    <None Include="User.ini" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
