@@ -33,7 +33,7 @@ void Rank(playertype type, MySoc * MsClient)
 
 		for (int i = 0; i < MAX_CLIENT; i++)
 		{
-			if (TempBuffer[i]->PlayerID != 0)
+			if (TempBuffer[i] && TempBuffer[i]->PlayerID != 0)
 				RefreshUser(TempBuffer[i]->PlayerID, PLAYER, TempBuffer[i]);
 		}
 		
@@ -54,7 +54,7 @@ void Rank(playertype type, MySoc * MsClient)
 
 		for (int i = 0; i < MAX_CLIENT; i++)
 		{
-			if (TempBuffer[i]->QuestionerID != 0)
+			if (TempBuffer[i] && TempBuffer[i]->QuestionerID != 0)
 				RefreshUser(TempBuffer[i]->QuestionerID, PLAYER, TempBuffer[i]);
 		}
 	}
@@ -128,3 +128,4 @@ void ShowRank(MySoc * MsClient)
 
 	send(MsClient->sClient, "SendRankTableEND", MSGSIZE, 0);
 }
+

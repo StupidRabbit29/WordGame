@@ -180,7 +180,11 @@ void questioner::Play(struct MySoc * MsClient)
 	{
 		char temp[MSGSIZE] = { '\0' };
 		recv(MsClient->sClient, temp, MSGSIZE, 0);
+		memset(word, 0, sizeof(word));
 		strncpy_s(word, temp, 99);
+
+		if (DEBUG)
+			cout << word << endl;
 
 		if (strcmp(word, "QUITQUITQUITQUITQUITQUITQUITQUITQUITQUIT") == 0)
 		{
@@ -214,13 +218,13 @@ void questioner::Play(struct MySoc * MsClient)
 			WritePrivateProfileStringA(sectionname.c_str(), keyname.c_str(), word, filename.c_str());
 			WritePrivateProfileStringA(sectionname.c_str(), "number", keyname.c_str(), filename.c_str());
 
-			memset(word, 0, sizeof(word));
 			Qnum++;
+
+			send(MsClient->sClient, "Go On", MSGSIZE, 0);
 		}
 		else
 		{
 			send(MsClient->sClient, "单词长度不合适！请继续输入", MSGSIZE, 0);
-			memset(word, 0, sizeof(word));
 		}
 	}
 
@@ -268,14 +272,24 @@ string GetWord(int hard, int num, int allnum)
 //判断出题者给出的单词是否合格
 bool GoodWord(int& length, char *word)
 {
-	if (word[5] == '\0')
+	int len = strlen(word);
+
+	if (len > 0 && len < 5)
+		length = 4;
+	else if (len >= 5 && len < 9)
+		length = 6;
+	else if (len > 8 && len < 20)
+		length = 8;
+	else
+		return false;
+	/*if (word[5] == '\0')
 		length = 4;
 	else if (word[5] != '\0'&&word[9] == '\0')
 		length = 6;
 	else if (word[9] != '\0'&&word[20] == '\0')
 		length = 8;
 	else
-		return false;
+		return false;*/
 
 	return true;
 }

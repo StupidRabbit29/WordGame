@@ -3,7 +3,7 @@
 extern bool DEBUG;
 extern vector<player>Player;
 extern vector<questioner>Questioner;
-extern bool QuitSYSTEM;
+
 
 void GameControl(MySoc *MsClient)
 {
@@ -12,7 +12,8 @@ void GameControl(MySoc *MsClient)
 	if (DEBUG)
 		cout << "Called GameControl" << endl;
 
-	while (!QuitSYSTEM)
+	bool quit = false;
+	while (!quit)
 	{
 		//打印提示信息
 		string str1 = "******************欢迎来到单词消除游戏_03****************\n";
@@ -58,7 +59,7 @@ void GameControl(MySoc *MsClient)
 		case 0:
 			//退出系统
 		{
-			QuitSYSTEM = true;
+			quit = true;
 			break;
 		}
 		case 1:

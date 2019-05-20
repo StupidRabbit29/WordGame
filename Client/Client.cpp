@@ -138,6 +138,7 @@ int main()
 			send(sclient, data, strlen(data), 0);
 		}
 		
+		jump = false;
 		//send()用来将数据由指定的socket传给对方主机
 		//int send(int s, const void * msg, int len, unsigned int flags)
 		//s为已建立好连接的socket，msg指向数据内容，len则为数据长度，参数flags一般设0
@@ -167,6 +168,10 @@ int main()
 
 			while(jump)
 				jump = PlayerGame(sclient);
+
+			char temprecv[MSGSIZE] = { '\0' };
+			recv(sclient, temprecv, MSGSIZE, 0);
+			cout << temprecv << endl;
 		}
 		
 		if (strcmp(recData, "已进入出题者游戏，请输入任意字符以开始游戏！") == 0)
@@ -176,6 +181,8 @@ int main()
 			send(sclient, temp.c_str(), temp.length(), 0);
 
 			QuestionerGame(sclient);
+
+			jump = true;
 		}
 
 		if (strcmp(recData, "BeginToSendRankTable") == 0)
@@ -185,19 +192,21 @@ int main()
 			{
 				recv(sclient, temp, MSGSIZE, 0);
 
-				if (strcmp(recData, "BeginToShowInfo") == 0)
+				if (strcmp(temp, "BeginToShowInfo") == 0)
 				{
 					Info tempinfo;
 					recv(sclient, (char*)&tempinfo, MSGSIZE, 0);
 					PrintInfo(tempinfo);
 				}
-
-				if (strcmp(recData, "SendRankTableEND") == 0)
+				else if (strcmp(temp, "SendRankTableEND") == 0)
 					break;
+				else
+					cout << temp << endl;
 
-				//cout << temp;
 				memset(temp, 0, sizeof(temp));
 			}
+
+			jump = true;
 		}
 	}
 
@@ -256,12 +265,15 @@ void QuestionerGame(SOCKET& sclient)
 {
 	char start[MSGSIZE+1] = { '\0' };
 	recv(sclient, start, MSGSIZE, 0);
+	cout << start << endl;
 
 	bool quit = false;
 	char word[100] = { '\0' };
+	cin.ignore(100, '\n');
 	while (!quit)
 	{
-		if (cin.getline(word, 100, '\n') && word[0] != 0)
+
+		if (cin.getline(word, 99, '\n') && word[0] != '\0')
 		{
 			send(sclient, word, sizeof(word), 0);
 			memset(word, 0, sizeof(word));
@@ -278,6 +290,8 @@ void QuestionerGame(SOCKET& sclient)
 
 		if (strcmp(temp, "quit") == 0)
 			quit = true;
+		else if(strcmp(temp, "Go On")!=0)
+			cout << temp << endl;
 	}
 }
 

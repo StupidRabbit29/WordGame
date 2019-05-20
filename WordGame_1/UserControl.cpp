@@ -75,7 +75,7 @@ void UserControl(playertype type, MySoc * MsClient)
 		{
 			Rank(PLAYER, MsClient);
 			Rank(QUESTIONER, MsClient);
-			ShowRank();
+			ShowRank(MsClient);
 
 			if (type == PLAYER)
 				user = &(*(MsClient->itp));
@@ -87,7 +87,7 @@ void UserControl(playertype type, MySoc * MsClient)
 		case 2:
 			//²éÑ¯Ä£Ê½
 		{
-			Search();
+			Search(MsClient);
 			break;
 		}
 		case 3: 

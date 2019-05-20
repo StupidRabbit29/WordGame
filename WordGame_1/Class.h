@@ -48,7 +48,7 @@ public:
 	string SFriendID();
 protected:
 
-	virtual void Showinfo(struct info& info);
+	virtual void Showinfo(struct info& tempinfo);
 	int ID;	
 	vector<int>friends;
 private:
@@ -67,7 +67,7 @@ public:
 	player(const string&, const string&, int, int, int, int, int);
 	virtual ~player();
 
-	virtual void Showinfo(struct info& info)override;
+	virtual void Showinfo(struct info& tempinfo)override;
 	virtual void Play(struct MySoc * MsClient)override;
 	virtual void setID()override;
 	
@@ -90,7 +90,7 @@ public:
 	questioner(const string&, const string&, int, int, int, int);
 	virtual ~questioner();
 
-	virtual void Showinfo(struct info& info)override;
+	virtual void Showinfo(struct info& tempinfo)override;
 	virtual void Play(struct MySoc * MsClient)override;
 	virtual void setID()override;
 
@@ -147,13 +147,13 @@ bool cmp(player& a, player& b);
 bool cmp1(player& a, player& b);
 bool cmq(questioner& a, questioner& b);
 void RefreshUser(const int ID, playertype type, MySoc * MsClient);
-void ShowRank();
-void Search();
-void Findlevel(int level, playertype type);
-void Findrank(int rank, playertype type);
-void FindEXP(int EXP);
-void Findround(int round);
-void FindQnum(int Qnum);
+void ShowRank(MySoc * MsClient);
+void Search(MySoc * MsClient);
+void Findlevel(int level, playertype type, MySoc *MsClient);
+void Findrank(int rank, playertype type, MySoc *MsClient);
+void FindEXP(int EXP, MySoc *MsClient);
+void Findround(int round, MySoc *MsClient);
+void FindQnum(int Qnum, MySoc *MsClient);
 void AddFriends(person* user, playertype type);
 bool SameWord(int diff, char *word);
 

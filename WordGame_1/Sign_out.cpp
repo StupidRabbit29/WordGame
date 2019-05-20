@@ -3,10 +3,7 @@
 extern bool DEBUG;
 extern vector<player>Player;
 extern vector<questioner>Questioner;
-extern vector<player>::iterator itp;
-extern vector<questioner>::iterator itq;
-extern int PlayerID;
-extern int QuestionerID;
+
 
 void Sign_out(playertype type, MySoc * MsClient)
 {
@@ -15,9 +12,9 @@ void Sign_out(playertype type, MySoc * MsClient)
 
 	//Ð´ÎÄµµ
 	if (type == PLAYER)
-		WriteUserfile(itp);
+		WriteUserfile(MsClient->itp);
 	else
-		WriteUserfile(itq);
+		WriteUserfile(MsClient->itq);
 
 	MsClient->PlayerID = MsClient->QuestionerID = 0;
 }
@@ -244,5 +241,4 @@ void ReadUserfile()
 		questionernum--;
 	}
 
-	PlayerID = QuestionerID = 0;
 }

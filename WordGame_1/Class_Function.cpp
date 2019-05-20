@@ -127,7 +127,7 @@ void questioner::SetQnum(int Q)
 
 /*3个信息输出函数，游戏者和出题人的信息输出均会调用用户信息输出*/
 //用户信息输出
-void person::Showinfo(Info& tempinfo)
+void person::Showinfo(struct info& tempinfo)
 {
 	if (DEBUG)
 		cout << "person::Showinfo" << endl;
@@ -157,7 +157,7 @@ void person::Showinfo(Info& tempinfo)
 	//cout.setf(ios_base::right, ios_base::adjustfield);
 }
 //游戏者的信息输出
-void player::Showinfo(Info& tempinfo)
+void player::Showinfo(struct info& tempinfo)
 {
 	if (DEBUG)
 		cout << "player::Showinfo" << endl;
@@ -186,7 +186,7 @@ void player::Showinfo(Info& tempinfo)
 	//cout << endl;
 }
 //出题人的信息输出
-void questioner::Showinfo(Info& tempinfo)
+void questioner::Showinfo(struct info& tempinfo)
 {
 	if (DEBUG)
 		cout << "questioner::Showinfo" << endl;

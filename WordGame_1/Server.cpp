@@ -7,13 +7,10 @@
 
 vector<player>Player;
 vector<questioner>Questioner;
-vector<player>::iterator itp;
-vector<questioner>::iterator itq;
-int PlayerID;
-int QuestionerID;
+
 const int MAX_USER_NUMBER = 1024;
 bool DEBUG = true;
-bool QuitSYSTEM = false;
+
 
 HANDLE sockThread[MAX_CLIENT];
 MySoc *TempBuffer[MAX_CLIENT] = { NULL };
@@ -127,6 +124,7 @@ unsigned __stdcall TrdController(void* pArguments)
 				socTrd_USE[i] = false;
 				CloseHandle(sockThread[i]);
 				delete TempBuffer[i];
+				TempBuffer[i] = NULL;
 			}
 		}
 		Sleep(3000);
