@@ -99,13 +99,13 @@ void UserControl(playertype type, MySoc * MsClient)
 		case 4:
 			//查看好友
 		{
-			user->Showfriends();
+			//user->Showfriends();
 			break;
 		}
 		case 5:
 			//加好友
 		{
-			AddFriends(user, type);
+			//AddFriends(user, type);
 			break;
 		}
 		default:
