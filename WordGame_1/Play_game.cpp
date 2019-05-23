@@ -2,15 +2,6 @@
 
 extern bool DEBUG;
 
-typedef struct game
-{
-	char word[30];
-	bool right;
-	int inter;
-	int sleeptime;
-	int i;
-	int wordnum;
-}Game;
 
 //共15级，每级的单词难度和单词个数和单词显示时间
 int GameDifficulty[15][3] = {

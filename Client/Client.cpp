@@ -149,7 +149,9 @@ int main()
 		if (ret>0)
 		{
 			recData[ret] = '\0';
-			cout << recData << endl;
+
+			if (strcmp(recData, "BeginToSendRankTable") != 0)
+				cout << recData << endl;
 		}
 
 		if (strcmp(recData, "Server quit!") == 0 || strcmp(recData, "服务器繁忙！请稍后重试！") == 0)
@@ -207,6 +209,21 @@ int main()
 			}
 
 			jump = true;
+		}
+
+		if (strcmp(recData, "开始双人对战！") == 0)
+		{
+			string temp;
+			cin >> temp;
+			send(sclient, temp.c_str(), temp.length(), 0);
+			jump = true;
+
+			while (jump)
+				jump = PlayerGame(sclient);
+
+			char temprecv[MSGSIZE] = { '\0' };
+			recv(sclient, temprecv, MSGSIZE, 0);
+			cout << temprecv << endl;
 		}
 	}
 

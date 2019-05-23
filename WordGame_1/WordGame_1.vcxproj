@@ -123,6 +123,7 @@
     <ClCompile Include="Sign_out.cpp" />
     <ClCompile Include="Sign_up.cpp" />
     <ClCompile Include="UserControl.cpp" />
+    <ClCompile Include="VS.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Class.h" />

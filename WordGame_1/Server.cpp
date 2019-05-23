@@ -9,7 +9,7 @@ vector<player>Player;
 vector<questioner>Questioner;
 
 const int MAX_USER_NUMBER = 1024;
-bool DEBUG = true;
+bool DEBUG = false;
 
 
 HANDLE sockThread[MAX_CLIENT];

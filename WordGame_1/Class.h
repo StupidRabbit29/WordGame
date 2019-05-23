@@ -125,6 +125,17 @@ typedef struct MySoc
 	int QuestionerID;
 }MySoc;
 
+
+typedef struct game
+{
+	char word[30];
+	bool right;
+	int inter;
+	int sleeptime;
+	int i;
+	int wordnum;
+}Game;
+
 void GameControl(MySoc * MsClient);
 void Sign_up(playertype type, MySoc * MsClient);
 void Sign_in(playertype type, MySoc * MsClient);
@@ -156,6 +167,7 @@ void Findround(int round, MySoc *MsClient);
 void FindQnum(int Qnum, MySoc *MsClient);
 void AddFriends(person* user, playertype type);
 bool SameWord(int diff, char *word);
+void VS(MySoc * MsClient1, MySoc * MsClient2);
 
 
 unsigned __stdcall TrdController(void* pArguments);
