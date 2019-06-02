@@ -23,10 +23,13 @@ void Search(MySoc * MsClient)
 		{
 			stringstream ss;
 			char temp[MSGSIZE + 1] = { '\0' };
+
+			//读取用户输入选择
 			recv(MsClient->sClient, temp, MSGSIZE, 0);
 			ss << temp;
 			ss >> choice;
 
+			//输入正确性检验
 			if (!(choice == 0 || choice == 1))
 			{
 				char temp[MSGSIZE] = "请重新输入操作选项";
@@ -42,7 +45,6 @@ void Search(MySoc * MsClient)
 			type = QUESTIONER;
 
 		//打印提示信息
-
 		string str1 = "*******************请输入您的查询方式*******************\n";
 		string str2 = "                   0       按姓名查询\n";
 		string str3 = "                   1       按等级查询\n";
@@ -75,6 +77,7 @@ void Search(MySoc * MsClient)
 			ss << temp;
 			ss >> searchtype;
 
+			//输入正确性检验
 			if (!(searchtype >= 0 && searchtype <= 5))
 			{
 				char temp[MSGSIZE] = "输入错误，重新输入";
@@ -110,6 +113,7 @@ void Search(MySoc * MsClient)
 					strcpy_s(temp, str.c_str());
 					send(MsClient->sClient, temp, MSGSIZE, 0);
 
+					//读取用户名
 					char Get[MSGSIZE] = { '\0' };
 					recv(MsClient->sClient, Get, MSGSIZE, 0);
 
@@ -125,6 +129,7 @@ void Search(MySoc * MsClient)
 					else
 						str2 = "输入错误,";
 
+					//判断用户是否存在
 					if (rightname == true)
 					{
 						if (!findUser(tempname, ptemp))
@@ -135,6 +140,7 @@ void Search(MySoc * MsClient)
 					}
 				}
 
+				//发送查找到的用户信息
 				send(MsClient->sClient, "BeginToSendRankTable", MSGSIZE, 0);
 
 				send(MsClient->sClient, "BeginToShowInfo", MSGSIZE, 0);
@@ -154,10 +160,13 @@ void Search(MySoc * MsClient)
 				{
 					stringstream ss;
 					char temp[MSGSIZE + 1] = { '\0' };
+
+					//读取用户输入
 					recv(MsClient->sClient, temp, MSGSIZE, 0);
 					ss << temp;
 					ss >> level;
 
+					//输入正确性检验
 					if (!(level >= 0 && level <= 15))
 					{
 						char temp[MSGSIZE] = "输入错误，重新输入";
@@ -167,6 +176,7 @@ void Search(MySoc * MsClient)
 						Get = true;
 				}
 
+				//按等级查找用户
 				Findlevel(level, PLAYER, MsClient);
 			}
 			else if (searchtype == 2)
@@ -179,10 +189,12 @@ void Search(MySoc * MsClient)
 				{
 					stringstream ss;
 					char temp[MSGSIZE + 1] = { '\0' };
+					//读取用户输入
 					recv(MsClient->sClient, temp, MSGSIZE, 0);
 					ss << temp;
 					ss >> rank;
 
+					//输入正确性检验
 					if (rank < 0)
 					{
 						char temp[MSGSIZE] = "输入错误，重新输入";
@@ -192,6 +204,7 @@ void Search(MySoc * MsClient)
 						Get = true;
 				}
 
+				//按排名查找用户
 				Findrank(rank, PLAYER, MsClient);
 			}
 			else if (searchtype == 3)
@@ -204,10 +217,13 @@ void Search(MySoc * MsClient)
 				{
 					stringstream ss;
 					char temp[MSGSIZE + 1] = { '\0' };
+
+					//读取用户输入
 					recv(MsClient->sClient, temp, MSGSIZE, 0);
 					ss << temp;
 					ss >> EXP;
 
+					//输入正确性检验
 					if (EXP < 0)
 					{
 						char temp[MSGSIZE] = "输入错误，重新输入";
@@ -217,6 +233,7 @@ void Search(MySoc * MsClient)
 						Get = true;
 				}
 				
+				//按经验值查找用户
 				FindEXP(EXP, MsClient);
 			}
 			else if (searchtype == 4)
@@ -229,10 +246,12 @@ void Search(MySoc * MsClient)
 				{
 					stringstream ss;
 					char temp[MSGSIZE + 1] = { '\0' };
+					//读取用户输入
 					recv(MsClient->sClient, temp, MSGSIZE, 0);
 					ss << temp;
 					ss >> round;
 
+					//输入正确性检验
 					if (round < 0)
 					{
 						char temp[MSGSIZE] = "输入错误，重新输入";
@@ -241,7 +260,8 @@ void Search(MySoc * MsClient)
 					else
 						Get = true;
 				}
-			
+				
+				//按闯关数查找用户
 				Findround(round, MsClient);
 			}
 			else
@@ -268,6 +288,7 @@ void Search(MySoc * MsClient)
 					strcpy_s(temp, str.c_str());
 					send(MsClient->sClient, temp, MSGSIZE, 0);
 
+					//读取用户名
 					char Get[MSGSIZE] = { '\0' };
 					recv(MsClient->sClient, Get, MSGSIZE, 0);
 
@@ -283,6 +304,7 @@ void Search(MySoc * MsClient)
 					else
 						str2 = "输入错误,";
 
+					//判断用户是否存在
 					if (rightname == true)
 					{
 						if (!findUser(tempname, qtemp))
@@ -293,6 +315,7 @@ void Search(MySoc * MsClient)
 					}
 				}
 
+				//发送查找到的用户信息
 				send(MsClient->sClient, "BeginToSendRankTable", MSGSIZE, 0);
 
 				send(MsClient->sClient, "BeginToShowInfo", MSGSIZE, 0);
@@ -337,10 +360,12 @@ void Search(MySoc * MsClient)
 				{
 					stringstream ss;
 					char temp[MSGSIZE + 1] = { '\0' };
+					//读取用户输入
 					recv(MsClient->sClient, temp, MSGSIZE, 0);
 					ss << temp;
 					ss >> rank;
 
+					//输入正确性检验
 					if (rank < 0)
 					{
 						char temp[MSGSIZE] = "输入错误，重新输入";
@@ -350,6 +375,7 @@ void Search(MySoc * MsClient)
 						Get = true;
 				}
 
+				//按排名查找用户
 				Findrank(rank, QUESTIONER, MsClient);
 			}
 			else if (searchtype == 3)
@@ -362,10 +388,12 @@ void Search(MySoc * MsClient)
 				{
 					stringstream ss;
 					char temp[MSGSIZE + 1] = { '\0' };
+					//读取用户输入
 					recv(MsClient->sClient, temp, MSGSIZE, 0);
 					ss << temp;
 					ss >> Qnum;
 
+					//输入正确性检验
 					if (Qnum < 0)
 					{
 						char temp[MSGSIZE] = "输入错误，重新输入";
@@ -375,6 +403,7 @@ void Search(MySoc * MsClient)
 						Get = true;
 				}
 				
+				//按出题数查找用户
 				FindQnum(Qnum, MsClient);
 			}
 			else
@@ -383,8 +412,6 @@ void Search(MySoc * MsClient)
 			}
 		}
 	}
-	
-	//send(MsClient->sClient, "查询已结束！", MSGSIZE, 0);
 }
 //查找等级
 void Findlevel(int level, playertype type, MySoc *MsClient)
@@ -398,6 +425,7 @@ void Findlevel(int level, playertype type, MySoc *MsClient)
 		{
 			if ((*it).Getlevel() == level)
 			{
+				//找到相应用户后发送用户信息
 				send(MsClient->sClient, "BeginToShowInfo", MSGSIZE, 0);
 				Info info;
 				(*it).Showinfo(info);
@@ -416,6 +444,7 @@ void Findlevel(int level, playertype type, MySoc *MsClient)
 		{
 			if ((*it).Getlevel() == level)
 			{
+				//找到相应用户后发送用户信息
 				send(MsClient->sClient, "BeginToShowInfo", MSGSIZE, 0);
 				Info info;
 				(*it).Showinfo(info);
@@ -442,6 +471,7 @@ void Findrank(int rank, playertype type, MySoc *MsClient)
 		{
 			if ((*it).Getrank() == rank)
 			{
+				//找到相应用户后发送用户信息
 				send(MsClient->sClient, "BeginToShowInfo", MSGSIZE, 0);
 				Info info;
 				(*it).Showinfo(info);
@@ -460,6 +490,7 @@ void Findrank(int rank, playertype type, MySoc *MsClient)
 		{
 			if ((*it).Getrank() == rank)
 			{
+				//找到相应用户后发送用户信息
 				send(MsClient->sClient, "BeginToShowInfo", MSGSIZE, 0);
 				Info info;
 				(*it).Showinfo(info);
@@ -484,6 +515,7 @@ void FindEXP(int EXP, MySoc *MsClient)
 	{
 		if ((*it).GetEXP() == EXP)
 		{
+			//找到相应用户后发送用户信息
 			send(MsClient->sClient, "BeginToShowInfo", MSGSIZE, 0);
 			Info info;
 			(*it).Showinfo(info);
@@ -507,6 +539,7 @@ void Findround(int round, MySoc *MsClient)
 	{
 		if ((*it).Getround() == round)
 		{
+			//找到相应用户后发送用户信息
 			send(MsClient->sClient, "BeginToShowInfo", MSGSIZE, 0);
 			Info info;
 			(*it).Showinfo(info);
@@ -530,6 +563,7 @@ void FindQnum(int Qnum, MySoc *MsClient)
 	{
 		if ((*it).GetQnum() == Qnum)
 		{
+			//找到相应用户后发送用户信息
 			send(MsClient->sClient, "BeginToShowInfo", MSGSIZE, 0);
 			Info info;
 			(*it).Showinfo(info);

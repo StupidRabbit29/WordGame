@@ -18,6 +18,7 @@ void Sign_in(playertype type, MySoc *MsClient)
 
 	string str1 = "请输入要登录的用户名（不超过20个字符）";
 	string str2 = "";
+
 	//判断用户输入的名字是否存在
 	while (!rightname)
 	{
@@ -27,6 +28,7 @@ void Sign_in(playertype type, MySoc *MsClient)
 		send(MsClient->sClient, temp, MSGSIZE, 0);
 		
 		char Get[MSGSIZE] = { '\0' };
+		//读取用户名
 		recv(MsClient->sClient, Get, MSGSIZE, 0);
 
 		if (Get[0] != '\0')
@@ -41,6 +43,7 @@ void Sign_in(playertype type, MySoc *MsClient)
 		else
 			str2 = "输入错误,";
 
+		//判断用户输入的名字是否存在
 		if (rightname == true && type == PLAYER)
 		{
 			if (!findUser(tempname, ptemp))
@@ -75,6 +78,7 @@ void Sign_in(playertype type, MySoc *MsClient)
 		send(MsClient->sClient, temp, MSGSIZE, 0);
 
 		char Get[MSGSIZE] = { '\0' };
+		//读取密码
 		recv(MsClient->sClient, Get, MSGSIZE, 0);
 
 		if (Get[8] != '\0')
@@ -86,6 +90,7 @@ void Sign_in(playertype type, MySoc *MsClient)
 		else
 			str2 = "输入错误,";
 	
+		//判断用户输入的名字是否存在
 		if (rightpw && type == PLAYER)
 		{
 			if (!checkpw(temppw, &(*ptemp)))
@@ -126,7 +131,8 @@ void Sign_in(playertype type, MySoc *MsClient)
 
 	Sign_out(type, MsClient);
 }
-//在游戏者中查找用户
+
+//根据名字在游戏者中查找用户
 bool findUser(string name, vector<player>::iterator& temp)
 {
 	bool find = false;
@@ -141,7 +147,8 @@ bool findUser(string name, vector<player>::iterator& temp)
 
 	return find;
 }
-//在出题者中查找用户
+
+//根据名字在出题者中查找用户
 bool findUser(string name, vector<questioner>::iterator& temp)
 {
 	bool find = false;
@@ -156,7 +163,7 @@ bool findUser(string name, vector<questioner>::iterator& temp)
 
 	return find;
 }
-//在游戏者中查找用户
+//根据ID在游戏者中查找用户
 bool findUser(int ID, vector<player>::iterator& temp)
 {
 	bool find = false;
@@ -171,7 +178,7 @@ bool findUser(int ID, vector<player>::iterator& temp)
 
 	return find;
 }
-//在出题者中查找用户
+//根据ID在出题者中查找用户
 bool findUser(int ID, vector<questioner>::iterator& temp)
 {
 	bool find = false;
@@ -186,6 +193,7 @@ bool findUser(int ID, vector<questioner>::iterator& temp)
 
 	return find;
 }
+
 //检查密码正确性
 bool checkpw(string password, person* user)
 {

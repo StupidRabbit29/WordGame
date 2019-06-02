@@ -2,8 +2,8 @@
 
 #include"Class.h"
 
-
 #pragma comment(lib, "ws2_32.lib")
+using namespace std;
 
 vector<player>Player;
 vector<questioner>Questioner;
@@ -11,19 +11,17 @@ vector<questioner>Questioner;
 const int MAX_USER_NUMBER = 1024;
 bool DEBUG = false;
 
-
 HANDLE sockThread[MAX_CLIENT];
 MySoc *TempBuffer[MAX_CLIENT] = { NULL };
 bool socTrd_USE[MAX_CLIENT] = { false };
 bool socTrd_CLOSE[MAX_CLIENT] = { true };
-
-using namespace std;
 
 int main()
 {
 	//读取文档，加载游戏
 	ReadUserfile();
 
+	//Windows socket 配置
 	WORD socketVersion = MAKEWORD(2, 2);
 	WSADATA wsaData;
 	if (WSAStartup(socketVersion, &wsaData) != 0)
@@ -51,6 +49,7 @@ int main()
 		cout << "bind error!" << endl;
 	}
 
+	//设置监听
 	if (listen(sListen, MAX_CLIENT) == SOCKET_ERROR)
 		//监听sListen   sListen最大可以排队的连接数量
 	{
@@ -58,6 +57,7 @@ int main()
 		return 0;
 	}
 
+	//打开控制线程
 	HANDLE Controller = (HANDLE)_beginthreadex(NULL, 0, TrdController, NULL, 0, NULL);
 
 	while (true)
@@ -66,6 +66,7 @@ int main()
 		MsClient->iaddrSize = sizeof(SOCKADDR_IN);
 
 		cout << "waiting for connect...\n";
+		//接收到客户端连接
 		MsClient->sClient = accept(sListen, (struct sockaddr *) &(MsClient->ClientAddr), &(MsClient->iaddrSize));
 		//Server socket      Client socket address    address size
 		if (MsClient->sClient == INVALID_SOCKET)
@@ -77,6 +78,7 @@ int main()
 		cout << "Accept a connection:" << inet_ntoa(MsClient->ClientAddr.sin_addr) << ":"
 			<< ntohs(MsClient->ClientAddr.sin_port) << endl;
 
+		//若服务器为满，允许连接
 		if (!Full(socTrd_USE, MAX_CLIENT))
 		{
 			int TrdNum = GetEmptyTrd(socTrd_USE, MAX_CLIENT);
@@ -84,10 +86,13 @@ int main()
 			socTrd_CLOSE[TrdNum] = false;
 			TempBuffer[TrdNum] = MsClient;
 			MsClient->TrdNum = TrdNum;
+
+			//给客户端开启一个线程，用于客户游戏
 			sockThread[TrdNum] = (HANDLE)_beginthreadex(NULL, 0, MySocketThread, MsClient, 0, NULL);
 		}
 		else
 		{
+			//发送信息，使客户端退出
 			char szMessage[MSGSIZE] = { '\0' };
 			recv(MsClient->sClient, szMessage, sizeof(szMessage), 0);
 
@@ -102,6 +107,7 @@ int main()
 		}
 	}
 
+	//关闭
 	WaitForSingleObject(Controller, INFINITE);
 	CloseHandle(Controller);
 	closesocket(sListen);
@@ -111,6 +117,7 @@ int main()
 	return 0;
 }
 
+//控制线程
 unsigned __stdcall TrdController(void* pArguments)
 {
 	while (true)
@@ -120,6 +127,7 @@ unsigned __stdcall TrdController(void* pArguments)
 			//判断用户线程是否已经退出
 			if (socTrd_USE[i] == true && socTrd_CLOSE[i] == true)
 			{
+				//若一个客户端线程退出，关闭其信息，空出位置以服务新客户
 				cout << "已解除一个HANDLE的占用" << endl;
 				socTrd_USE[i] = false;
 				CloseHandle(sockThread[i]);
@@ -134,11 +142,13 @@ unsigned __stdcall TrdController(void* pArguments)
 	return 0;
 }
 
+//客户端线程
 unsigned __stdcall MySocketThread(void* pArguments)
 {
 	bool bOptVal = true;
 	int bOptLen = sizeof(bool);
 
+	//设置心跳检测
 	if (setsockopt(((MySoc*)pArguments)->sClient, SOL_SOCKET, SO_KEEPALIVE, (char*)&bOptVal, bOptLen) == SOCKET_ERROR)
 	{
 		cout << "setsockopt error!\n";
@@ -168,7 +178,7 @@ unsigned __stdcall MySocketThread(void* pArguments)
 											当然啦， 如果是在Linux上， 那么这个最大尝试此时其实是可以在程序中设置的。
 											*/
 
-											// 调用接口， 启用心跳机制
+	// 调用接口， 启用心跳机制
 	WSAIoctl(((MySoc*)pArguments)->sClient, SIO_KEEPALIVE_VALS,
 		&inKeepAlive, ulInLen,
 		&outKeepAlive, ulOutLen,
@@ -177,20 +187,22 @@ unsigned __stdcall MySocketThread(void* pArguments)
 	//进入游戏
 	GameControl((MySoc*)pArguments);
 
+	//使客户端退出
 	const char *sendData = "Server quit!";
 	send(((MySoc*)pArguments)->sClient, sendData, strlen(sendData), 0);
 
+	//服务器断开连接，退出线程
 	cout << "删除" << inet_ntoa(((MySoc*)pArguments)->ClientAddr.sin_addr) << ":"
 		<< ntohs(((MySoc*)pArguments)->ClientAddr.sin_port) << "服务器端socket" << endl;
 	if (socTrd_CLOSE[((MySoc*)pArguments)->TrdNum] == false)
 		closesocket(((MySoc*)pArguments)->sClient);
 	socTrd_CLOSE[((MySoc*)pArguments)->TrdNum] = true;
-	//delete (MySoc*)pArguments;
 
 	_endthreadex(0);
 	return 0;
 }
 
+//判断服务器是否满额
 bool Full(bool *p, int size)
 {
 	for (int i = 0; i < size; i++)
@@ -200,6 +212,7 @@ bool Full(bool *p, int size)
 	return true;
 }
 
+//返回一个服务器空闲的序号
 int GetEmptyTrd(bool *p, int size)
 {
 	int i = 0;

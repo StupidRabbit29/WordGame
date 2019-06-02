@@ -7,8 +7,8 @@ extern vector<questioner>Questioner;
 
 void GameControl(MySoc *MsClient)
 {
-	////读取文档，加载游戏
-	//ReadUserfile();
+	//读取文档，加载游戏
+
 	if (DEBUG)
 		cout << "Called GameControl" << endl;
 
@@ -32,6 +32,7 @@ void GameControl(MySoc *MsClient)
 		strcpy_s(temp, str1.c_str());
 		send(MsClient->sClient, temp, MSGSIZE, 0);
 		
+		//读取用户的选择
 		int choice = -1;
 		bool Get = false;
 		while (!Get)
@@ -41,6 +42,7 @@ void GameControl(MySoc *MsClient)
 			stringstream ss;
 			ss << GetChoice;
 			ss >> choice;
+			//输入正确性检验
 			if (!(choice == 0 || choice == 1 || choice == 2 || choice == 3))
 			{
 				char temp[MSGSIZE] = "请重新输入操作选项";
@@ -65,6 +67,7 @@ void GameControl(MySoc *MsClient)
 		case 1:
 			//用户注册
 		{
+			//提示信息
 			memset(temp, 0, sizeof(temp));
 			stemp = "选择要注册的用户类型：闯关者（0） or 出题者（1）";
 			strcpy_s(temp, stemp.c_str());
@@ -78,6 +81,7 @@ void GameControl(MySoc *MsClient)
 				ss << GetChoice;
 				choice2 = -1;
 				ss >> choice2;
+				//输入正确性检验
 				if (!(choice2 == 0 || choice2 == 1))
 				{
 					char temp[MSGSIZE] = "请重新输入";
@@ -89,10 +93,12 @@ void GameControl(MySoc *MsClient)
 
 			if (choice2 == 0)
 			{
+				//注册闯关者
 				Sign_up(PLAYER, MsClient);
 			}
 			else if (choice2 == 1)
 			{
+				//注册出题者
 				Sign_up(QUESTIONER, MsClient);
 			}
 
@@ -101,6 +107,7 @@ void GameControl(MySoc *MsClient)
 		case 2:
 			//用户登录
 		{	
+			//提示信息
 			memset(temp, 0, sizeof(temp));
 			stemp = "选择要登录的用户类型：闯关者（0） or 出题者（1）";
 			strcpy_s(temp, stemp.c_str());
@@ -114,6 +121,7 @@ void GameControl(MySoc *MsClient)
 				ss << GetChoice;
 				choice2 = -1;
 				ss >> choice2;
+				//输入正确性检验
 				if (!(choice2 == 0 || choice2 == 1))
 				{
 					char temp[MSGSIZE] = "请重新输入";
@@ -125,17 +133,21 @@ void GameControl(MySoc *MsClient)
 
 			if (choice2 == 0)
 			{
+				//登录到闯关者
 				Sign_in(PLAYER, MsClient);
 			}
 			else if (choice2 == 1)
 			{
+				//登录到出题者
 				Sign_in(QUESTIONER, MsClient);
 			}
 			
 			break;
 		}
 		case 3:
+			//查看帮助
 		{
+			//打印帮助
 			char help[MSGSIZE] = "	单词消除游戏由两类参与者组成：闯关者（即游戏玩家），出题者（为游戏增加游戏中使用单词）。\n游戏规则为，游戏每一轮，程序会根据该关卡难度，显示一个单词，一定时间后单词消失。\n闯关者需要在相应地方输入刚刚显示并消失的单词，\n如果闯关者输入正确（即闯关者输入的单词与刚刚显示的单词完全一致，包含大小写）则为通过。\n一关可以由一轮或者多轮组成。";
 			send(MsClient->sClient, help, MSGSIZE, 0);
 			char Gethelp[MSGSIZE+1] = { '\0' };

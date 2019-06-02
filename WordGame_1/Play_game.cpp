@@ -66,6 +66,7 @@ void player::Play(struct MySoc * MsClient)
 	if (DEBUG)
 		cout << "player::Play is called" << endl;
 
+	//提示信息
 	char start[MSGSIZE] = { "已进入闯关者游戏，请输入任意字符以开始游戏！" };
 	send(MsClient->sClient, start, MSGSIZE, 0);
 
@@ -89,6 +90,8 @@ void player::Play(struct MySoc * MsClient)
 		string word = GetWord(hard, i + 1, wordnum);
 		char tempword[30] = { '\0' };
 		strncpy_s(tempword, word.c_str(), 30);
+
+		//配置游戏相关的设置，给客户端发送游戏设置
 		Game temp;
 		strcpy_s(temp.word, tempword);
 		temp.sleeptime = sleeptime;
@@ -105,6 +108,7 @@ void player::Play(struct MySoc * MsClient)
 
 		if (temp.right == true)
 		{
+			//增加经验值
 			EXP += 100 + (hard - 2) * 10 + (i + 1) * 5 - temp.inter * 3;
 		}
 		else
@@ -147,11 +151,13 @@ void questioner::Play(struct MySoc * MsClient)
 	if (DEBUG)
 		cout << "questioner::Play is called" << endl;
 
+	//提示信息
 	char start[MSGSIZE] = { "已进入出题者游戏，请输入任意字符以开始游戏！" };
 	send(MsClient->sClient, start, MSGSIZE, 0);
 
 	recv(MsClient->sClient, start, MSGSIZE, 0);
 
+	//提示信息
 	string str1 = "系统会根据你输入单词的长度（注意不超过20个），将其分为三类难度，分类方式如下：\n";
 	string str2 = "        4级      5个字符以内\n";
 	string str3 = "        6级      5-9个字符  \n";
@@ -170,6 +176,7 @@ void questioner::Play(struct MySoc * MsClient)
 	while (true)
 	{
 		char temp[MSGSIZE] = { '\0' };
+		//接收单词
 		recv(MsClient->sClient, temp, MSGSIZE, 0);
 		memset(word, 0, sizeof(word));
 		strncpy_s(word, temp, 99);
@@ -177,6 +184,7 @@ void questioner::Play(struct MySoc * MsClient)
 		if (DEBUG)
 			cout << word << endl;
 
+		//客户端已退出出题
 		if (strcmp(word, "QUITQUITQUITQUITQUITQUITQUITQUITQUITQUIT") == 0)
 		{
 			send(MsClient->sClient, "quit", MSGSIZE, 0);
@@ -188,6 +196,7 @@ void questioner::Play(struct MySoc * MsClient)
 		if (GoodWord(length, word))
 			//根据长度组织单词，因此判断输入单词长度是否符合规范
 		{
+			//检验单词是否重复
 			if (SameWord(length, word))
 			{
 				memset(word, 0, sizeof(word));
@@ -245,6 +254,7 @@ string GetWord(int hard, int num, int allnum)
 	ss << hard;
 	ss >> shard;
 
+	//读取词库中单词个数
 	int number = GetPrivateProfileIntA(shard.c_str(), "number", 0, ".\\Dictionary.ini");
 
 	ss.str("");
@@ -255,6 +265,7 @@ string GetWord(int hard, int num, int allnum)
 
 	char word[30] = { '\0' };
 
+	//从词库中取单词
 	GetPrivateProfileStringA(shard.c_str(), snum.c_str(), "", word, sizeof(word), ".\\Dictionary.ini");
 
 	return word;
@@ -273,18 +284,11 @@ bool GoodWord(int& length, char *word)
 		length = 8;
 	else
 		return false;
-	/*if (word[5] == '\0')
-		length = 4;
-	else if (word[5] != '\0'&&word[9] == '\0')
-		length = 6;
-	else if (word[9] != '\0'&&word[20] == '\0')
-		length = 8;
-	else
-		return false;*/
-
+	
 	return true;
 }
 
+//检验单词是否重复
 bool SameWord(int diff, char *word)
 {
 	bool Same = false;
@@ -295,6 +299,7 @@ bool SameWord(int diff, char *word)
 	ss >> sdiff;
 	string filename(".\\Dictionary.ini");
 
+	//读取词库中单词个数
 	int num = GetPrivateProfileIntA(sdiff.c_str(), "number", 0, filename.c_str());
 
 	for (int i = 1; i <= num; i++)
@@ -306,6 +311,7 @@ bool SameWord(int diff, char *word)
 		ss >> skey;
 		char tempword[100]{ '\0' };
 
+		//从词库中取单词
 		GetPrivateProfileStringA(sdiff.c_str(), skey.c_str(), "", tempword, sizeof(tempword), filename.c_str());
 		
 		if (strcmp(tempword, word) == 0)

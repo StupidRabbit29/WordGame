@@ -45,6 +45,7 @@ void PrintInfo(Info& tempinfo);
 using namespace std;
 int main()
 {
+	//windows socket
 	WORD sockVersion = MAKEWORD(2, 2);
 	WSADATA wsaData;
 	if (WSAStartup(sockVersion, &wsaData) != 0)
@@ -52,6 +53,7 @@ int main()
 		return 0;
 	}
 
+	//配置客户端socket
 	SOCKET sclient = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (sclient == INVALID_SOCKET)
 	{
@@ -65,6 +67,7 @@ int main()
 	serAddr.sin_family = AF_INET;
 	serAddr.sin_port = htons(PORT);
 	serAddr.sin_addr.s_addr = inet_addr(SERVER_ADDRESS);
+	//绑定
 	if (connect(sclient, (sockaddr *)&serAddr, sizeof(serAddr)) == SOCKET_ERROR)
 		//		客户端socket   服务器端的地址   地址长度
 	{  //连接失败 
@@ -115,6 +118,7 @@ int main()
 		cout << recData << endl;
 	}
 
+	//服务器繁忙，客户端应该退出
 	if (strcmp(recData, "Server quit!") == 0 || strcmp(recData, "服务器繁忙！请稍后重试！") == 0)
 	{
 		cout << "客户端退出" << endl;
@@ -124,6 +128,7 @@ int main()
 	
 	while (!quit)
 	{
+		//发送消息
 		if (!jump)
 		{
 			cout << "Send:";
@@ -144,6 +149,7 @@ int main()
 		//s为已建立好连接的socket，msg指向数据内容，len则为数据长度，参数flags一般设0
 		//成功则返回实际传送出去的字符数，失败返回-1，错误原因存于error 
 
+		//接收消息
 		char recData[MSGSIZE+1];
 		int ret = recv(sclient, recData, MSGSIZE, 0);
 		if (ret>0)
@@ -154,6 +160,7 @@ int main()
 				cout << recData << endl;
 		}
 
+		//退出
 		if (strcmp(recData, "Server quit!") == 0 || strcmp(recData, "服务器繁忙！请稍后重试！") == 0)
 		{
 			quit = true;
@@ -161,6 +168,7 @@ int main()
 			Sleep(2000);
 		}
 
+		//开始闯关者游戏
 		if (strcmp(recData, "已进入闯关者游戏，请输入任意字符以开始游戏！") == 0)
 		{
 			string temp;
@@ -176,6 +184,7 @@ int main()
 			cout << temprecv << endl;
 		}
 		
+		//开始出题者出题
 		if (strcmp(recData, "已进入出题者游戏，请输入任意字符以开始游戏！") == 0)
 		{
 			string temp;
@@ -187,6 +196,7 @@ int main()
 			jump = true;
 		}
 
+		//开始接收用户列表
 		if (strcmp(recData, "BeginToSendRankTable") == 0)
 		{
 			char temp[MSGSIZE] = { '\0' };
@@ -197,6 +207,7 @@ int main()
 				if (strcmp(temp, "BeginToShowInfo") == 0)
 				{
 					Info tempinfo;
+					//接收一个用户信息
 					recv(sclient, (char*)&tempinfo, MSGSIZE, 0);
 					PrintInfo(tempinfo);
 				}
@@ -211,7 +222,7 @@ int main()
 			jump = true;
 		}
 
-		if (strcmp(recData, "开始双人对战！") == 0)
+		/*if (strcmp(recData, "开始双人对战！") == 0)
 		{
 			string temp;
 			cin >> temp;
@@ -224,7 +235,7 @@ int main()
 			char temprecv[MSGSIZE] = { '\0' };
 			recv(sclient, temprecv, MSGSIZE, 0);
 			cout << temprecv << endl;
-		}
+		}*/
 	}
 
 	closesocket(sclient);
@@ -232,6 +243,7 @@ int main()
 	return 0;
 }
 
+//闯关者游戏
 bool PlayerGame(SOCKET& sclient)
 {
 	Game temp;
@@ -256,6 +268,7 @@ bool PlayerGame(SOCKET& sclient)
 	finish = clock();
 	interval = finish - start;
 
+	//判断单词正误
 	if (strcmp(ans.c_str(), temp.word) == 0)
 	{
 		if (temp.i<temp.wordnum - 1)
@@ -270,6 +283,7 @@ bool PlayerGame(SOCKET& sclient)
 		cout << "答案错误，游戏结束！" << endl;
 	}
 
+	//发送反馈信息
 	send(sclient, (char*)&temp, sizeof(Game), 0);
 
 	if (temp.right == false || temp.right == true && temp.i == temp.wordnum - 1)
@@ -278,6 +292,7 @@ bool PlayerGame(SOCKET& sclient)
 		return true;
 }
 
+//出题者游戏
 void QuestionerGame(SOCKET& sclient)
 {
 	char start[MSGSIZE+1] = { '\0' };
@@ -287,6 +302,8 @@ void QuestionerGame(SOCKET& sclient)
 	bool quit = false;
 	char word[100] = { '\0' };
 	cin.ignore(100, '\n');
+
+	//逐个读取单词
 	while (!quit)
 	{
 
@@ -296,6 +313,7 @@ void QuestionerGame(SOCKET& sclient)
 			memset(word, 0, sizeof(word));
 		}
 		else
+			//输入结束
 		{
 			send(sclient, "QUITQUITQUITQUITQUITQUITQUITQUITQUITQUIT", MSGSIZE, 0);
 			memset(word, 0, sizeof(word));
@@ -312,6 +330,7 @@ void QuestionerGame(SOCKET& sclient)
 	}
 }
 
+//打印用户信息
 void PrintInfo(Info& tempinfo)
 {
 	//打印用户基本信息

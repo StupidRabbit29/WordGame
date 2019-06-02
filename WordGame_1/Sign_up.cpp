@@ -24,10 +24,13 @@ void Sign_up(playertype type, MySoc * MsClient)
 		send(MsClient->sClient, temp, MSGSIZE, 0);
 
 		char Get[MSGSIZE] = { '\0' };
+
+		//接收用户名
 		recv(MsClient->sClient, Get, MSGSIZE, 0);
 
 		str2.erase();
 
+		//输入正确性检验
 		if (Get[0] != '\0')
 		{
 			rightname = true;
@@ -62,6 +65,8 @@ void Sign_up(playertype type, MySoc * MsClient)
 		send(MsClient->sClient, temp, MSGSIZE, 0);
 
 		char Get[MSGSIZE] = { '\0' };
+
+		//接收密码
 		recv(MsClient->sClient, Get, MSGSIZE, 0);
 
 		str2.erase();
@@ -151,6 +156,7 @@ bool samename(playertype type, const string& name)
 	}
 }
 
+//设置用户ID
 void setpersonID(person* p)
 {
 	p->setID();

@@ -43,6 +43,7 @@ void UserControl(playertype type, MySoc * MsClient)
 		strcpy_s(temp, str1.c_str());
 		send(MsClient->sClient, temp, MSGSIZE, 0);
 
+		//读取用户输入的选择
 		int choice = -1;
 		bool Get = false;
 		while (!Get)
@@ -52,6 +53,8 @@ void UserControl(playertype type, MySoc * MsClient)
 			stringstream ss;
 			ss << GetChoice;
 			ss >> choice;
+
+			//输入正确性检验
 			if (!(choice == 0 || choice == 1 || choice == 2 || choice == 3||choice==4||choice==5||choice==6))
 			{
 				char temp[MSGSIZE] = "请重新输入操作选项";
@@ -110,6 +113,7 @@ void UserControl(playertype type, MySoc * MsClient)
 		}
 		case 6:
 		{
+			//查看当前登录到服务器的用户
 			send(MsClient->sClient, "BeginToSendRankTable", MSGSIZE, 0);
 			send(MsClient->sClient, "当前登录用户有：", MSGSIZE, 0);
 
@@ -213,6 +217,7 @@ void UserControl(playertype type, MySoc * MsClient)
 	}
 }
 
+//添加好友
 void AddFriends(person* user, playertype type)
 {
 	//输入合适用户名
@@ -238,6 +243,8 @@ void AddFriends(person* user, playertype type)
 		if (rightname == true && type == PLAYER)
 		{
 			vector<player>::iterator ptemp;
+
+			//查找用户 
 			if (!findUser(tempname, ptemp))
 			{
 				rightname = false;
@@ -251,6 +258,8 @@ void AddFriends(person* user, playertype type)
 		else if (rightname == true && type == QUESTIONER)
 		{
 			vector<questioner>::iterator qtemp;
+
+			//查找用户 
 			if (!findUser(tempname, qtemp))
 			{
 				rightname = false;
