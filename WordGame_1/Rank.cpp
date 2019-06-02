@@ -34,6 +34,7 @@ void Rank(playertype type)
 			i++;
 		}
 
+		//由于改变了排序，需要刷新迭代器位置
 		if (PlayerID != 0)
 			RefreshUser(PlayerID, PLAYER);
 	}
@@ -51,6 +52,7 @@ void Rank(playertype type)
 			i++;
 		}
 
+		//由于改变了排序，需要刷新迭代器位置
 		if (QuestionerID != 0)
 			RefreshUser(QuestionerID, QUESTIONER);
 	}
@@ -73,12 +75,14 @@ bool cmq(questioner& a, questioner& b)
 		|| a.Getlevel() == b.Getlevel() && a.GetQnum() > b.GetQnum());
 }
 
+//根据ID刷新迭代器
 void RefreshUser(const int ID, playertype type)
 {
 	if (type == PLAYER)
 	{
 		for (auto it = Player.begin(); it != Player.end(); it++)
 		{
+			//找到用户，刷新迭代器
 			if ((*it).GetID() == ID)
 			{
 				itp = it;
@@ -90,6 +94,7 @@ void RefreshUser(const int ID, playertype type)
 	{
 		for (auto it = Questioner.begin(); it != Questioner.end(); it++)
 		{
+			//找到用户，刷新迭代器
 			if ((*it).GetID() == ID)
 			{
 				itq = it;

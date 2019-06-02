@@ -75,6 +75,8 @@ void Search()
 				while (!rightname)
 				{
 					cout << "请输入要查询的用户名（不超过20个字符）" << endl;
+					
+					//读取用户名
 					if (cin.getline(tempname, 20) && tempname[0] != '\0')
 						rightname = true;
 					else
@@ -88,6 +90,7 @@ void Search()
 						}
 					}
 
+					//判断用户是否存在
 					if (rightname == true)
 					{
 						if (!findUser(tempname, ptemp))
@@ -106,6 +109,7 @@ void Search()
 				int level = 0;
 				cout << "请输入您想查询的等级" << endl;
 
+				//读取用户输入
 				while (!(cin >> level&&level >= 0 && level <= 15))
 				{
 					cout << "输入错误，重新输入" << endl;
@@ -113,6 +117,7 @@ void Search()
 					cin.ignore(100, '\n');
 				}
 
+				//按等级查找用户
 				Findlevel(level, PLAYER);
 			}
 			else if (searchtype == 2)
@@ -121,6 +126,7 @@ void Search()
 				int rank = 0;
 				cout << "请输入您想查询的排名" << endl;
 
+				//读取用户输入
 				while (!(cin >> rank && rank >= 0))
 				{
 					cout << "输入错误，重新输入" << endl;
@@ -128,6 +134,7 @@ void Search()
 					cin.ignore(100, '\n');
 				}
 
+				//按排名查找用户
 				Findrank(rank, PLAYER);
 			}
 			else if (searchtype == 3)
@@ -136,6 +143,7 @@ void Search()
 				int EXP = 0;
 				cout << "请输入您想查询的EXP" << endl;
 
+				//读取用户输入
 				while (!(cin >> EXP && EXP >= 0))
 				{
 					cout << "输入错误，重新输入" << endl;
@@ -143,6 +151,7 @@ void Search()
 					cin.ignore(100, '\n');
 				}
 
+				//按经验值查找用户
 				FindEXP(EXP);
 			}
 			else if (searchtype == 4)
@@ -153,11 +162,13 @@ void Search()
 
 				while (!(cin >> round && round >= 0))
 				{
+					//读取用户输入
 					cout << "输入错误，重新输入" << endl;
 					cin.clear();
 					cin.ignore(100, '\n');
 				}
 
+				//按闯关数查找用户
 				Findround(round);
 			}
 			else
@@ -177,6 +188,8 @@ void Search()
 				while (!rightname)
 				{
 					cout << "请输入要查询的用户名（不超过20个字符）" << endl;
+					
+					//读取用户输入
 					if (cin.getline(tempname, 20) && tempname[0] != '\0')
 						rightname = true;
 					else
@@ -190,6 +203,7 @@ void Search()
 						}
 					}
 
+					//判断用户是否存在
 					if (rightname == true)
 					{
 						if (!findUser(tempname, qtemp))
@@ -208,6 +222,7 @@ void Search()
 				int level = 0;
 				cout << "请输入您想查询的等级" << endl;
 
+				//读取用户输入
 				while (!(cin >> level&&level >= 0 && level <= 15))
 				{
 					cout << "输入错误，重新输入" << endl;
@@ -215,6 +230,7 @@ void Search()
 					cin.ignore(100, '\n');
 				}
 
+				//按等级查找用户
 				Findlevel(level, QUESTIONER);
 			}
 			else if (searchtype == 2)
@@ -223,6 +239,7 @@ void Search()
 				int rank = 0;
 				cout << "请输入您想查询的排名" << endl;
 
+				//读取用户输入
 				while (!(cin >> rank && rank >= 0))
 				{
 					cout << "输入错误，重新输入" << endl;
@@ -230,6 +247,7 @@ void Search()
 					cin.ignore(100, '\n');
 				}
 
+				//按排名查找用户
 				Findrank(rank, QUESTIONER);
 			}
 			else if (searchtype == 3)
@@ -238,6 +256,7 @@ void Search()
 				int Qnum = 0;
 				cout << "请输入您想查询的出题数" << endl;
 
+				//读取用户输入
 				while (!(cin >> Qnum && Qnum >= 0))
 				{
 					cout << "输入错误，重新输入" << endl;
@@ -245,6 +264,7 @@ void Search()
 					cin.ignore(100, '\n');
 				}
 
+				//按出题数查找用户
 				FindQnum(Qnum);
 			}
 			else
@@ -266,6 +286,7 @@ void Findlevel(int level, playertype type)
 		{
 			if ((*it).Getlevel() == level)
 			{
+				//找到相应用户后打印用户信息
 				(*it).Showinfo();
 				find = true;
 			}
@@ -281,6 +302,7 @@ void Findlevel(int level, playertype type)
 		{
 			if ((*it).Getlevel() == level)
 			{
+				//找到相应用户后打印用户信息
 				(*it).Showinfo();
 				find = true;
 			}
@@ -300,6 +322,7 @@ void Findrank(int rank, playertype type)
 		{
 			if ((*it).Getrank() == rank)
 			{
+				//找到相应用户后打印用户信息
 				(*it).Showinfo();
 				find = true;
 			}
@@ -315,6 +338,7 @@ void Findrank(int rank, playertype type)
 		{
 			if ((*it).Getrank() == rank)
 			{
+				//找到相应用户后打印用户信息
 				(*it).Showinfo();
 				find = true;
 			}
@@ -332,6 +356,7 @@ void FindEXP(int EXP)
 	{
 		if ((*it).GetEXP() == EXP)
 		{
+			//找到相应用户后打印用户信息
 			(*it).Showinfo();
 			find = true;
 		}
@@ -348,6 +373,7 @@ void Findround(int round)
 	{
 		if ((*it).Getround() == round)
 		{
+			//找到相应用户后打印用户信息
 			(*it).Showinfo();
 			find = true;
 		}
@@ -364,6 +390,7 @@ void FindQnum(int Qnum)
 	{
 		if ((*it).GetQnum() == Qnum)
 		{
+			//找到相应用户后打印用户信息
 			(*it).Showinfo();
 			find = true;
 		}

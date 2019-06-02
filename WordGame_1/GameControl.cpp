@@ -23,6 +23,7 @@ void GameControl(void)
 			<< "                    3：      查看帮助" << endl
 			<< "*******************************************************************" << endl;
 
+		//读取用户的选择
 		int choice = 0;
 		while (!(cin >> choice))
 		{
@@ -49,6 +50,8 @@ void GameControl(void)
 				int type = 0;
 				cin >> type;
 				cin.get();
+
+				//输入正确性检验
 				if (cin.good() && type == 0)
 				{
 					righttype = true;
@@ -79,6 +82,8 @@ void GameControl(void)
 				int type = 0;
 				cin >> type;
 				cin.get();
+
+				//输入正确性检验
 				if (cin.good() && type == 0)
 				{
 					righttype = true;
@@ -100,6 +105,7 @@ void GameControl(void)
 			break;
 		}
 		case 3:
+			//查看帮助
 		{
 			cout << "	单词消除游戏由两类参与者组成：闯关者（即游戏玩家），出题者（为游戏增加游戏中使用单词）。" << endl
 				<< "游戏规则为，游戏每一轮，程序会根据该关卡难度，显示一个单词，一定时间后单词消失。" << endl

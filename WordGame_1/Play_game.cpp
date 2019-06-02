@@ -222,6 +222,7 @@ string GetWord(int hard, int num, int allnum)
 	ss << hard;
 	ss >> shard;
 
+	//读取词库中单词个数
 	int number = GetPrivateProfileIntA(shard.c_str(), "number", 0, ".\\Dictionary.ini");
 
 	ss.str("");
@@ -232,6 +233,7 @@ string GetWord(int hard, int num, int allnum)
 
 	char word[30] = { '\0' };
 
+	//从词库中取单词
 	GetPrivateProfileStringA(shard.c_str(), snum.c_str(), "", word, sizeof(word), ".\\Dictionary.ini");
 
 	return word;
@@ -252,6 +254,7 @@ bool GoodWord(int& length, char *word)
 	return true;
 }
 
+//检验单词是否重复
 bool SameWord(int diff, char *word)
 {
 	bool Same = false;
@@ -262,6 +265,7 @@ bool SameWord(int diff, char *word)
 	ss >> sdiff;
 	string filename(".\\Dictionary.ini");
 
+	//读取词库中单词个数
 	int num = GetPrivateProfileIntA(sdiff.c_str(), "number", 0, filename.c_str());
 
 	for (int i = 1; i <= num; i++)
@@ -273,6 +277,7 @@ bool SameWord(int diff, char *word)
 		ss >> skey;
 		char tempword[100]{ '\0' };
 
+		//从词库中取单词
 		GetPrivateProfileStringA(sdiff.c_str(), skey.c_str(), "", tempword, sizeof(tempword), filename.c_str());
 		
 		if (strcmp(tempword, word) == 0)

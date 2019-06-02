@@ -30,6 +30,8 @@ void UserControl(person* user, playertype type)
 			<< "------------------------------------" << endl;
 
 		int choice = 0;
+
+		//读取用户输入的选择
 		while (!(cin >> choice))
 		{
 			cin.clear();
@@ -98,6 +100,7 @@ void UserControl(person* user, playertype type)
 	}
 }
 
+//添加好友
 void AddFriends(person* user, playertype type)
 {
 	//输入合适用户名
@@ -122,6 +125,7 @@ void AddFriends(person* user, playertype type)
 
 		if (rightname == true && type == PLAYER)
 		{
+			//查找用户 
 			vector<player>::iterator ptemp;
 			if (!findUser(tempname, ptemp))
 			{
@@ -135,6 +139,7 @@ void AddFriends(person* user, playertype type)
 		}
 		else if (rightname == true && type == QUESTIONER)
 		{
+			//查找用户 
 			vector<questioner>::iterator qtemp;
 			if (!findUser(tempname, qtemp))
 			{

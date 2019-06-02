@@ -21,6 +21,8 @@ void Sign_up(playertype type)
 	while (!rightname)
 	{
 		cout << "请输入用户名（不超过20个字符）" << endl;
+		
+		//接收用户名
 		if (cin.getline(tempname, 20) && tempname[0] != '\0')
 			rightname = true;
 		else
@@ -52,6 +54,8 @@ void Sign_up(playertype type)
 	while (!rightpw)
 	{
 		cout << "请输入密码（多于8个字符且不超过20个字符）" << endl;
+		
+		//接收密码
 		if (cin.getline(temppw, 20) && temppw[8] != '\0')
 			rightpw = true;
 		else
@@ -141,6 +145,7 @@ bool samename(playertype type, const string& name)
 	}
 }
 
+//设置用户ID
 void setpersonID(person* p)
 {
 	p->setID();

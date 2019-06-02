@@ -8,6 +8,7 @@ extern vector<questioner>::iterator itq;
 extern int PlayerID;
 extern int QuestionerID;
 
+//退出登录
 void Sign_out(playertype type)
 {
 	if (DEBUG)
@@ -22,6 +23,7 @@ void Sign_out(playertype type)
 	PlayerID = QuestionerID = 0;
 }
 
+//写文档 游戏者
 void WriteUserfile(vector<player>::iterator temp)
 {
 	string filename = ".\\User.ini";
@@ -34,10 +36,12 @@ void WriteUserfile(vector<player>::iterator temp)
 	LPCSTR str1 = sectionname.c_str();
 	LPCSTR str2 = filename.c_str();
 	
+	//写入名字
 	WritePrivateProfileStringA(str1, "name", (*temp).Getname().c_str(), str2);
-	
+	//写入密码
 	WritePrivateProfileStringA(str1, "password", (*temp).Getpassword().c_str(), str2);
 	
+	//写入ID
 	ss.str("");
 	ss.clear();
 	ss << (*temp).GetID();
@@ -45,6 +49,7 @@ void WriteUserfile(vector<player>::iterator temp)
 	LPCSTR str3 = tempstr.c_str();
 	WritePrivateProfileStringA(str1, "ID", str3, str2);
 	
+	//写入等级
 	ss.str("");
 	ss.clear();
 	ss << (*temp).Getlevel();
@@ -52,6 +57,7 @@ void WriteUserfile(vector<player>::iterator temp)
 	str3 = tempstr.c_str();
 	WritePrivateProfileStringA(str1, "level", str3, str2);
 	
+	//写入排名
 	ss.str("");
 	ss.clear();
 	ss << (*temp).Getrank();
@@ -59,6 +65,7 @@ void WriteUserfile(vector<player>::iterator temp)
 	str3 = tempstr.c_str();
 	WritePrivateProfileStringA(str1, "rank", str3, str2);
 	
+	//写入经验值
 	ss.str("");
 	ss.clear();
 	ss << (*temp).GetEXP();
@@ -66,6 +73,7 @@ void WriteUserfile(vector<player>::iterator temp)
 	str3 = tempstr.c_str();
 	WritePrivateProfileStringA(str1, "EXP", str3, str2);
 	
+	//写入闯关数
 	ss.str("");
 	ss.clear();
 	ss << (*temp).Getround();
@@ -73,6 +81,7 @@ void WriteUserfile(vector<player>::iterator temp)
 	str3 = tempstr.c_str();
 	WritePrivateProfileStringA(str1, "round", str3, str2);
 
+	//写入朋友数量
 	ss.str("");
 	ss.clear();
 	ss << (*temp).FriendsNum();
@@ -80,6 +89,7 @@ void WriteUserfile(vector<player>::iterator temp)
 	str3 = tempstr.c_str();
 	WritePrivateProfileStringA(str1, "Fnum", str3, str2);
 
+	//写入朋友列表
 	tempstr = (*temp).SFriendID();
 	str3 = tempstr.c_str();
 	WritePrivateProfileStringA(str1, "Friends", str3, str2);
@@ -97,10 +107,12 @@ void WriteUserfile(vector<questioner>::iterator temp)
 	LPCSTR str1 = sectionname.c_str();
 	LPCSTR str2 = filename.c_str();
 
+	//写入名字
 	WritePrivateProfileStringA(str1, "name", (*temp).Getname().c_str(), str2);
-
+	//写入密码
 	WritePrivateProfileStringA(str1, "password", (*temp).Getpassword().c_str(), str2);
 
+	//写入ID
 	ss.str("");
 	ss.clear();
 	ss << (*temp).GetID();
@@ -108,6 +120,7 @@ void WriteUserfile(vector<questioner>::iterator temp)
 	LPCSTR str3 = tempstr.c_str();
 	WritePrivateProfileStringA(str1, "ID", str3, str2);
 
+	//写入等级
 	ss.str("");
 	ss.clear();
 	ss << (*temp).Getlevel();
@@ -115,6 +128,7 @@ void WriteUserfile(vector<questioner>::iterator temp)
 	str3 = tempstr.c_str();
 	WritePrivateProfileStringA(str1, "level", str3, str2);
 
+	//写入排名
 	ss.str("");
 	ss.clear();
 	ss << (*temp).Getrank();
@@ -122,6 +136,7 @@ void WriteUserfile(vector<questioner>::iterator temp)
 	str3 = tempstr.c_str();
 	WritePrivateProfileStringA(str1, "rank", str3, str2);
 
+	//写入出题数
 	ss.str("");
 	ss.clear();
 	ss << (*temp).GetQnum();
@@ -129,6 +144,7 @@ void WriteUserfile(vector<questioner>::iterator temp)
 	str3 = tempstr.c_str();
 	WritePrivateProfileStringA(str1, "Qnum", str3, str2);
 
+	//写入朋友数量
 	ss.str("");
 	ss.clear();
 	ss << (*temp).FriendsNum();
@@ -136,10 +152,12 @@ void WriteUserfile(vector<questioner>::iterator temp)
 	str3 = tempstr.c_str();
 	WritePrivateProfileStringA(str1, "Fnum", str3, str2);
 
+	//写入朋友列表
 	tempstr = (*temp).SFriendID();
 	str3 = tempstr.c_str();
 	WritePrivateProfileStringA(str1, "Friends", str3, str2);
 }
+
 //从文档中读取用户信息，写入容器中
 void ReadUserfile()
 {
@@ -153,6 +171,7 @@ void ReadUserfile()
 	LPCSTR str1 = tempstr.c_str();
 	LPCSTR str2 = filename.c_str();
 
+	//确定有多少闯关者和出题者
 	playernum = GetPrivateProfileIntA(str1, "player", 0, str2);
 	questionernum = GetPrivateProfileIntA(str1, "questioner", 0, str2);
 
@@ -163,6 +182,7 @@ void ReadUserfile()
 		ss >> tempstr;
 		LPCSTR pstr = tempstr.c_str();
 
+		//读取用户基本信息
 		char name[30];
 		GetPrivateProfileStringA(pstr, "name", "", name, sizeof(name), str2);
 		char password[30] = { '\0' };
@@ -178,6 +198,7 @@ void ReadUserfile()
 		int round = 0;
 		int Fnum = 0;
 
+		//读取特殊信息
 		ID= GetPrivateProfileIntA(pstr, "ID", 0, str2);
 		level= GetPrivateProfileIntA(pstr, "level", 0, str2);
 		rank= GetPrivateProfileIntA(pstr, "rank", 0, str2);
@@ -189,6 +210,8 @@ void ReadUserfile()
 		ss.str("");
 		ss.clear();
 		ss << Friend;
+
+		//转换朋友列表
 		for (int i = 0; i < Fnum; i++)
 		{
 			int ID;
@@ -208,6 +231,7 @@ void ReadUserfile()
 		ss >> tempstr;
 		LPCSTR qstr = tempstr.c_str();
 
+		//读取用户基本信息
 		char name[30] = { '\0' };
 		GetPrivateProfileStringA(qstr, "name", "", name, sizeof(name), str2);
 		char password[30] = { '\0' };
@@ -222,6 +246,7 @@ void ReadUserfile()
 		int Qnum = 0;
 		int Fnum = 0;
 
+		//读取特殊信息
 		ID = GetPrivateProfileIntA(qstr, "ID", 0, str2);
 		level = GetPrivateProfileIntA(qstr, "level", 0, str2);
 		rank = GetPrivateProfileIntA(qstr, "rank", 0, str2);
@@ -232,6 +257,8 @@ void ReadUserfile()
 		ss.str("");
 		ss.clear();
 		ss << Friend;
+
+		//转换朋友列表
 		for (int i = 0; i < Fnum; i++)
 		{
 			int ID;

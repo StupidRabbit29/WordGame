@@ -95,107 +95,76 @@ void person::setbasicinfo(const string& name, const string& password)
 }
 void person::Setlevel(int level)
 {
+	//设置等级
 	this->level = level;
 }
 void person::Setrank(int rank)
 {
+	//设置排名
 	this->rank = rank;
 }
 //player
 void player::setID()
 {
+	//设置ID
 	ID = Player.size();
 }
 void player::SetEXP(int EXP)
 {
+	//设置经验
 	this->EXP = EXP;
 }
 void player::Setround(int round)
 {
+	//设置闯关数
 	this->round = round;
 }
 //questioner
 void questioner::setID()
 {
+	//设置ID
 	ID = Questioner.size();
 }
 void questioner::SetQnum(int Q)
 {
+	//设置出题数
 	this->Qnum = Q;
 }
 
 
 /*3个信息输出函数，游戏者和出题人的信息输出均会调用用户信息输出*/
 //用户信息输出
-void person::Showinfo()
+void person::Showinfo(struct info& tempinfo)
 {
 	if (DEBUG)
 		cout << "person::Showinfo" << endl;
 
-	//打印用户基本信息
-	cout.setf(ios_base::left, ios_base::adjustfield);
-
-	cout.width(5);
-	cout << "用户名:";
-	cout.width(20);
-	cout << name;
-
-	cout.width(4);
-	cout << "等级:";
-	cout.width(5);
-	cout << level;
-
-	cout.width(4);
-	cout << "排名:";
-	cout.width(5);
-	cout << rank;
-
-	cout.setf(ios_base::right, ios_base::adjustfield);
+	strncpy_s(tempinfo.name, name.c_str(), 29);
+	tempinfo.level = level;
+	tempinfo.rank = rank;
 }
 //游戏者的信息输出
-void player::Showinfo()
+void player::Showinfo(struct info& tempinfo)
 {
 	if (DEBUG)
 		cout << "player::Showinfo" << endl;
 
-	person::Showinfo();
+	person::Showinfo(tempinfo);
 
-	//打印游戏者信息
-	cout.setf(ios_base::left, ios_base::adjustfield);
-	
-	cout.width(5);
-	cout << "经验值:";
-	cout.width(6);
-	cout << EXP;
-
-	cout.width(7);
-	cout << "成功闯关数:";
-	cout.width(3);
-	cout << round;
-	
-	cout.setf(ios_base::right, ios_base::adjustfield);
-	
-	cout << endl;
+	tempinfo.type = PLAYER;
+	tempinfo.EXP = EXP;
+	tempinfo.round = round;
 }
 //出题人的信息输出
-void questioner::Showinfo()
+void questioner::Showinfo(struct info& tempinfo)
 {
 	if (DEBUG)
 		cout << "questioner::Showinfo" << endl;
 
-	person::Showinfo();
+	person::Showinfo(tempinfo);
 
-	//打印出题人信息
-	cout.setf(ios_base::left, ios_base::adjustfield);
-	
-	cout.width(5);
-	cout << "出题数:";
-	cout.width(5);
-	cout << Qnum;
-	
-	cout.setf(ios_base::right, ios_base::adjustfield);
-	
-	cout << endl;
+	tempinfo.type = QUESTIONER;
+	tempinfo.Qnum = Qnum;
 }
 
 
@@ -241,6 +210,7 @@ int person::FriendsNum()
 {
 	return friends.size();
 }
+//添加好友
 void person::addfriend(int ID)
 {
 	bool exist = false;
@@ -253,6 +223,7 @@ void person::addfriend(int ID)
 	else
 		cout << "Ta已经是您的好友" << endl;
 }
+//将好友列表转换成字符串
 string person::SFriendID()
 {
 	char Friend[30];
@@ -264,7 +235,7 @@ string person::SFriendID()
 	ss.getline(Friend, sizeof(Friend));	
 	return Friend;
 }
-
+//显示好友列表
 void player::Showfriends()
 {
 	if (FriendsNum() > 0)
@@ -275,7 +246,9 @@ void player::Showfriends()
 			vector<player>::iterator temp;
 			if (findUser(*it, temp))
 			{
-				(*temp).Showinfo();
+				Info tempinfo;
+				//打印好友信息
+				(*temp).Showinfo(tempinfo);
 				it++;
 			}
 			else
@@ -289,7 +262,7 @@ void player::Showfriends()
 		cout << "您还没有好友" << endl;
 	}
 }
-
+//显示好友列表
 void questioner::Showfriends()
 {
 	if (FriendsNum() > 0)
@@ -300,7 +273,9 @@ void questioner::Showfriends()
 			vector<questioner>::iterator temp;
 			if (findUser(*it, temp))
 			{
-				(*temp).Showinfo();
+				Info tempinfo;
+				//打印好友信息
+				(*temp).Showinfo(tempinfo);
 				it++;
 			}
 			else

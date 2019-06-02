@@ -7,6 +7,7 @@ extern vector<player>::iterator itp;
 extern vector<questioner>::iterator itq;
 extern int PlayerID;
 extern int QuestionerID;
+
 //用户登录
 void Sign_in(playertype type)
 {
@@ -22,6 +23,8 @@ void Sign_in(playertype type)
 	while (!rightname)
 	{
 		cout << "请输入要登录的用户名（不超过20个字符）" << endl;
+		
+		//读取用户名
 		if (cin.getline(tempname, 20) && tempname[0] != '\0')
 			rightname = true;
 		else
@@ -35,6 +38,7 @@ void Sign_in(playertype type)
 			}
 		}
 
+		//判断用户输入的名字是否存在
 		if (rightname == true && type == PLAYER)
 		{
 			if (!findUser(tempname, ptemp))
@@ -60,6 +64,8 @@ void Sign_in(playertype type)
 	while (!rightpw)
 	{
 		cout << "请输入密码（多于8个字符且不超过20个字符）：" << endl;
+		
+		//读取密码
 		if (cin.getline(temppw, 20) && temppw[8] != '\0')
 			rightpw = true;
 		else
@@ -73,6 +79,7 @@ void Sign_in(playertype type)
 			}
 		}
 
+		//判断用户输入的密码是否正确
 		if (rightpw && type == PLAYER)
 		{
 			if (!checkpw(temppw, &(*ptemp)))
