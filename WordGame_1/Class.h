@@ -53,10 +53,10 @@ protected:
 	vector<int>friends;
 private:
 
-	string name;
-	string password;
-	int level;
-	int rank;
+	string name;//姓名
+	string password;//密码
+	int level;//等级
+	int rank;//排名
 };
 
 //闯关者类
@@ -78,8 +78,8 @@ public:
 
 	virtual void Showfriends()override;
 private:
-	int EXP;
-	int round;
+	int EXP;//经验值
+	int round;//闯关数
 };
 
 //出题者类定义
@@ -99,7 +99,7 @@ public:
 
 	virtual void Showfriends()override;
 private:
-	int Qnum;
+	int Qnum;//出题数
 };
 
 typedef struct info
