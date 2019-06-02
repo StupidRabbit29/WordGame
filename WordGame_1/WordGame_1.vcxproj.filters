@@ -30,9 +30,6 @@
     <ClCompile Include="Sign_in.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Quit_system.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Play_game.cpp">
       <Filter>源文件</Filter>
     </ClCompile>

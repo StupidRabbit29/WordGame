@@ -115,7 +115,6 @@
     <ClCompile Include="GameControl.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Play_game.cpp" />
-    <ClCompile Include="Quit_system.cpp" />
     <ClCompile Include="Rank.cpp" />
     <ClCompile Include="Search.cpp" />
     <ClCompile Include="Sign_in.cpp" />
